@@ -1,0 +1,13 @@
+git hub: https://github.com/leonardotorricoIT/FinalProject-FE
+figma: https://www.figma.com/design/UxYbFcyyiVTtcRsMubbIX8/Final-project-FE?node-id=0-1&t=sJnNg6uzQxQlzru6-1
+letterbox: https://letterboxd.com/
+jira: https://assure-fe-movies.atlassian.net/jira/software/projects/SCRUM/boards/1/backlog?atlOrigin=eyJpIjoiZDU0MjJmNjlhY2NkNDE1ZjkwZDg3ZWViMjdhMjkyNjkiLCJwIjoiaiJ9
+
+
+the git way
+
+git checkout develop
+git pull
+git checkout feature/Zen-233.Implement-Unit-tests
+git merge develop
+git push --set-upstream origin feature/Zen-233.Implement-Unit-tests
