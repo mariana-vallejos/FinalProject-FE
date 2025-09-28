@@ -3,6 +3,7 @@ import CinemaImg from "../../assets/img/Cinema.svg";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router";
+import { useUser } from "../../context/UserContext";
 
 type LoginForm = {
   email: string;
@@ -10,7 +11,8 @@ type LoginForm = {
 };
 
 const LoginPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { login } = useUser();
 
   const initialValues: LoginForm = {
     email: "",
@@ -22,13 +24,18 @@ const LoginPage = () => {
     password: Yup.string().required("Password is mandatory"),
   });
 
-  const handleSubmit = (values: LoginForm) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      // setSubmitting(false);
-    }, 400);
-    // validate email, pwd role, etc
-    navigate('/')
+  const handleSubmit = async (values: LoginForm) => {
+    try {
+      await login(values.email, values.email.split("@")[0]);
+
+      if (values.email === "admin@cinelog.com") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Login failed", error);
+    }
   };
 
   return (
@@ -47,7 +54,7 @@ const LoginPage = () => {
             />
             <h1 className="text-center text-4xl font-bold py-3">CineLog</h1>
             <p className="font-light text-center py-2">
-              Welcome back! Please sing in to your account
+              Welcome back! Please sign in to your account
             </p>
 
             <div className="flex flex-col py-2">
