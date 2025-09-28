@@ -26,7 +26,7 @@ function Dashboard() {
             {
               key: "actions",
               header: "Actions",
-              render: () => (
+              render: (row) => (
                 <div className="flex justify-center gap-4">
                     <button 
                         onClick={() => console.log("Aca se renderiza para editar")}
@@ -35,7 +35,7 @@ function Dashboard() {
                         <MdEdit size={20} />
                     </button>
                     <button
-                        onClick={() => console.log("Aca se renderiza para eliminar")}
+                        onClick={() => console.log("Aca se renderiza para eliminar", row.id)}
                         className="text-gray-500 hover:text-red-600 transition-colors"
                     >
                         <MdDelete size={20} />
