@@ -13,12 +13,12 @@ type TableProps<T> = {
 
 export function Table<T extends Record<string, any>>({ data, columns }: TableProps<T>) {
     return (
-        <div className="overflow-x-auto rounded-lg shadow">
-            <table className="min-w-full border border-primary bg-white">
+        <div className="overflow-x-auto rounded-2xl shadow">
+            <table className="min-w-full border border-gray-100 bg-white">
                 <thead className="bg-primary text-white">
                     <tr>
                         {columns.map((col) => (
-                        <th key={col.key as string} className="px-4 py-2 text-left font-semibold">
+                        <th key={col.key as string} className="px-4 py-2 text-center font-semibold">
                             {col.header}
                         </th>
                         ))}
@@ -26,9 +26,11 @@ export function Table<T extends Record<string, any>>({ data, columns }: TablePro
                 </thead>
                 <tbody>
                 {data.map((row, idx) => (
-                    <tr key={idx} className="border-t hover:bg-gray-50">
+                    <tr key={idx} className="border-t border-gray-100 hover:bg-gray-50">
                         {columns.map((col) => (
-                            <td key={col.key as string} className="px-4 py-2">
+                            <td 
+                                key={col.key as string} 
+                                className="px-4 py-2 text-center">
                             {col.render ? col.render(row) : (row[col.key] as ReactNode)}
                             </td>
                         ))}
