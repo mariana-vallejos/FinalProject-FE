@@ -18,7 +18,7 @@ export function Table<T extends Record<string, any>>({ data, columns }: TablePro
                 <thead className="bg-primary text-white">
                     <tr>
                         {columns.map((col) => (
-                        <th key={col.key as string} className="px-4 py-2 text-center font-semibold">
+                        <th key={col.key as string} className="px-4 py-2 text-center font-sans">
                             {col.header}
                         </th>
                         ))}
