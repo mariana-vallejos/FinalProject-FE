@@ -46,7 +46,7 @@ body{
   }
 
   .input-normal {
-    @apply border-white/30 focus:ring-[rgba(0,166,232,0.35)];
+    @apply border-primary focus:ring-[rgba(0,166,232,0.35)];
   }
 
   .movie-form-modal-container {

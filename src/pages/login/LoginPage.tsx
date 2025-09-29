@@ -82,7 +82,8 @@ const LoginPage = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-primary hover:bg-blue-500 text-white px-10 py-2 rounded-3xl w-full"
+                className="btn-primary w-full"
+                aria-label="submit button"
               >
                 {isSubmitting ? "Loading..." : "Login"}
               </button>
