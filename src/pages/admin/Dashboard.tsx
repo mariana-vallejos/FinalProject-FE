@@ -7,7 +7,7 @@ import type { Movie } from "../../domain/Movie";
 import { useMovies } from "../../context/MoviesContext";
 import LoadingModal from "../../components/LoadingModalFallback";
 
-const AddEditMovieModal = lazy(() => import("../../components/AddEditMovieModal"));
+const AddEditMovieModal = lazy(() => import("../../components/AddEditMovieModal/AddEditMovieModal"));
 
 function Dashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
