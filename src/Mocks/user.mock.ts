@@ -1,12 +1,4 @@
-export type Role = "guest" | "admin" | "user";
-
-export type User = {
-    name: string;
-    email: string;
-    role: Role;
-    avatar: string;
-    isLoggedIn: boolean;
-};
+import type { User } from "../domain/User";
 
 export const mockGuest: User = {
     name: "",

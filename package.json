@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.13",
+    "dexie": "^4.2.0",
     "formik": "^2.4.6",
     "idb": "^8.0.3",
     "lucide-react": "^0.544.0",

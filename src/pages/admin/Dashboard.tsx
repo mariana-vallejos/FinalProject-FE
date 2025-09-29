@@ -1,13 +1,19 @@
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Table } from "../../components/Table";
-import { movies, type Movie } from "../../Mocks/movies.mock";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import ConfirmModal from "../../components/ConfirmModal";
 import Navbar from "../../components/Navbar";
+import type { Movie } from "../../domain/Movie";
+import { movies } from "../../Mocks/movies.mock";
+import AddEditMovieModal from "../../components/AddEditMovieModal";
+import { useMovies } from "../../context/MoviesContext";
+import LoadingModal from "../../components/LoadingModalFallback";
 
 function Dashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isAddModieModalOpen, setIsAddModieModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const {state, addMovie, deleteMovie} = useMovies();
 
   const handleOpenConfirm = (id: number) => {
     setSelectedId(id);
@@ -22,6 +28,7 @@ function Dashboard() {
   };
   
   return (
+    <>
     <div>
       <Navbar/>
       <div className="min-h-screen bg-primary-bg px-6 py-10">
@@ -30,7 +37,10 @@ function Dashboard() {
             Movie Management
           </h1>
           <button
-            onClick={() => console.log("Aca se renderiza para añadir movie")}
+            onClick={() => {
+              setIsAddModieModalOpen(true);
+              import("../../components/AddEditMovieModal");
+            }}
             className="bg-primary hover:bg-blue-500 text-white px-6 py-2 rounded-3xl shadow transition-colors"
           >
             Add New Movie
@@ -80,6 +90,19 @@ function Dashboard() {
       </div>
       
     </div>
+    {isAddModieModalOpen && (
+      <Suspense fallback={<LoadingModal label="Opening Add Modie Modal..."/>}>
+        <AddEditMovieModal
+          open={isAddModieModalOpen}
+          onClose={() => setIsAddModieModalOpen(false)}
+          onSubmit={async (input) => {
+            await addMovie(input);
+            setIsAddModieModalOpen(false);
+          }}
+        />
+      </Suspense>
+    )}
+    </>
   );
 }
 

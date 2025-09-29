@@ -1,49 +1,26 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { dbPromise } from "../db/db";
-import { v4 as uuid } from "uuid";
+import type { Movie } from "../domain/Movie";
+import type { Review } from "../domain/Review";
+import type { State } from "../domain/State";
 
-interface Movie {
-  id: string;
-  title: string;
-  year: number;
-  genres: string[];
-  description: string;
-  posterUrl?: string;
-  cast: string[];
-  tags?: string[];
-  createdAt: string;
-}
-interface Review {
-  id: string;
-  movieId: string;
-  userId: string;
-  rating: number;
-  text?: string;
-  tags?: string[];
-  createdAt: string;
-}
-
-interface State {
-  movies: Movie[];
-  reviews: Review[];
-}
 type Action =
   | { type: "SET_DATA"; movies: Movie[]; reviews: Review[] }
   | { type: "ADD_MOVIE"; movie: Movie }
   | { type: "EDIT_MOVIE"; movie: Movie }
-  | { type: "DELETE_MOVIE"; id: string }
+  | { type: "DELETE_MOVIE"; id: number }
   | { type: "ADD_REVIEW"; review: Review }
   | { type: "EDIT_REVIEW"; review: Review }
-  | { type: "DELETE_REVIEW"; id: string };
+  | { type: "DELETE_REVIEW"; id: number };
 
 const MoviesContext = createContext<{
   state: State;
   addMovie: (m: Omit<Movie, "id" | "createdAt">) => Promise<void>;
   editMovie: (m: Movie) => Promise<void>;
-  deleteMovie: (id: string) => Promise<void>;
+  deleteMovie: (id: number) => Promise<void>;
   addReview: (r: Omit<Review, "id" | "createdAt">) => Promise<void>;
   editReview: (r: Review) => Promise<void>;
-  deleteReview: (id: string) => Promise<void>;
+  deleteReview: (id: number) => Promise<void>;
 } | null>(null);
 
 function reducer(state: State, action: Action): State {
@@ -62,7 +39,7 @@ function reducer(state: State, action: Action): State {
     case "DELETE_MOVIE":
       return {
         ...state,
-        movies: state.movies.filter((m) => m.id !== action.id),
+        movies: state.movies.filter((movie) => movie.id !== action.id),
       };
     case "ADD_REVIEW":
       return { ...state, reviews: [...state.reviews, action.review] };
@@ -90,21 +67,27 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     (async () => {
       const db = await dbPromise;
-      const movies = await db.getAll("movies");
-      const reviews = await db.getAll("reviews");
+      const movieRows = await db.getAll("movies");
+      const reviewRows = await db.getAll("reviews");
+      const movies: Movie[] = movieRows.map((movie) => ( {id: movie.id!, ...movie} ));
+      const reviews: Review[] = reviewRows.map((review) => ( {id: review.id!, ...review} ));
       dispatch({ type: "SET_DATA", movies, reviews });
     })();
   }, []);
 
   // funciones
-  const addMovie = async (m: Omit<Movie, "id" | "createdAt">) => {
+  const addMovie = async (movie: Omit<Movie, "id" | "createdAt">) => {
     const db = await dbPromise;
+    const rightNowDate = new Date().toISOString();
+    const id = await db.add("movies", {
+      ...movie,
+      createdAt: rightNowDate
+    });
     const newMovie: Movie = {
-      ...m,
-      id: uuid(),
-      createdAt: new Date().toISOString(),
+      id,
+      ...movie,
+      createdAt: rightNowDate
     };
-    await db.put("movies", newMovie);
     dispatch({ type: "ADD_MOVIE", movie: newMovie });
   };
 
@@ -114,7 +97,7 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: "EDIT_MOVIE", movie });
   };
 
-  const deleteMovie = async (id: string) => {
+  const deleteMovie = async (id: number) => {
     const db = await dbPromise;
     await db.delete("movies", id);
     dispatch({ type: "DELETE_MOVIE", id });
@@ -122,12 +105,17 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
 
   const addReview = async (r: Omit<Review, "id" | "createdAt">) => {
     const db = await dbPromise;
-    const newReview: Review = {
+    const rightNowDate = new Date().toISOString();
+    const newReviewId = await db.put("reviews", {
       ...r,
-      id: uuid(),
-      createdAt: new Date().toISOString(),
-    };
-    await db.put("reviews", newReview);
+      createdAt: rightNowDate
+    });
+
+    const newReview: Review = {
+      id: newReviewId,
+      ...r,
+      createdAt: rightNowDate
+    }
     dispatch({ type: "ADD_REVIEW", review: newReview });
   };
 
@@ -137,7 +125,7 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: "EDIT_REVIEW", review });
   };
 
-  const deleteReview = async (id: string) => {
+  const deleteReview = async (id: number) => {
     const db = await dbPromise;
     await db.delete("reviews", id);
     dispatch({ type: "DELETE_REVIEW", id });
