@@ -5,10 +5,13 @@ import ConfirmModal from "../../components/ConfirmModal";
 import Navbar from "../../components/Navbar";
 import type { Movie } from "../../domain/Movie";
 import { movies } from "../../Mocks/movies.mock";
+import AddEditMovieModal from "../../components/AddEditMovieModal";
 
 function Dashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isAddModieModalOpen, setIsAddModieModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+
 
   const handleOpenConfirm = (id: number) => {
     setSelectedId(id);
@@ -23,6 +26,7 @@ function Dashboard() {
   };
   
   return (
+    <>
     <div>
       <Navbar/>
       <div className="min-h-screen bg-primary-bg px-6 py-10">
@@ -31,7 +35,7 @@ function Dashboard() {
             Movie Management
           </h1>
           <button
-            onClick={() => console.log("Aca se renderiza para añadir movie")}
+            onClick={() => setIsAddModieModalOpen(true)}
             className="bg-primary hover:bg-blue-500 text-white px-6 py-2 rounded-3xl shadow transition-colors"
           >
             Add New Movie
@@ -81,6 +85,12 @@ function Dashboard() {
       </div>
       
     </div>
+    <AddEditMovieModal
+      open={isAddModieModalOpen}
+      onClose={() => setIsAddModieModalOpen(false)}
+      onSubmit={}
+    />
+    </>
   );
 }
 
