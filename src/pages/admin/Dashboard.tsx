@@ -6,12 +6,13 @@ import Navbar from "../../components/Navbar";
 import type { Movie } from "../../domain/Movie";
 import { movies } from "../../Mocks/movies.mock";
 import AddEditMovieModal from "../../components/AddEditMovieModal";
+import { useMovies } from "../../context/MoviesContext";
 
 function Dashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddModieModalOpen, setIsAddModieModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-
+  const {state, addMovie, deleteMovie} = useMovies();
 
   const handleOpenConfirm = (id: number) => {
     setSelectedId(id);
@@ -88,7 +89,10 @@ function Dashboard() {
     <AddEditMovieModal
       open={isAddModieModalOpen}
       onClose={() => setIsAddModieModalOpen(false)}
-      onSubmit={}
+      onSubmit={async (input: Omit<Movie, 'id' | 'createdAt'>) => {
+        await addMovie(input);
+        setIsAddModieModalOpen(false);
+      }}
     />
     </>
   );

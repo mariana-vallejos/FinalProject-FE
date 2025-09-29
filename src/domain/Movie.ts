@@ -9,5 +9,3 @@ export type Movie = {
     tags?: string[];
     createdAt: string;
 }
-
-export type NewMovie = Partial<Movie>;

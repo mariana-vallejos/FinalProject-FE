@@ -1,4 +1,4 @@
-import type { Movie, NewMovie } from "../domain/Movie";
+import type { Movie } from "../domain/Movie";
 import { useState } from "react";
 import { movieSchema } from "../validators/MovieSchema";
 
@@ -8,7 +8,7 @@ type ErrorsType = Partial<Record<FieldType, string>> ;
 type AddEditMovieProps = {
     open: Boolean;
     onClose?: () => void;
-    onSubmit: (movie: NewMovie) => void;
+    onSubmit: (movie: Omit<Movie, 'id' | 'createdAt'>) => void;
 }
 
 export default function AddEditMovieModal({open, onClose, onSubmit}: AddEditMovieProps){
