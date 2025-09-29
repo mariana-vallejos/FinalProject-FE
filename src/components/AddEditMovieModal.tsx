@@ -1,7 +1,6 @@
 import type { Movie } from "../domain/Movie";
 import { useEffect, useState } from "react";
 import { movieSchema } from "../validators/MovieSchema";
-import type { MixedOptions } from "yup";
 
 type FieldType = "title" | "year" | "description" | "posterUrl";
 type ErrorsType = Partial<Record<FieldType, string>> ;
@@ -18,7 +17,7 @@ type AddEditMovieProps = {
 const EmptyForm: Partial<Movie> = {
     id: 0,
     title: "", 
-    year: 0, 
+    year: new Date().getFullYear(), 
     description: "", 
     posterUrl: "", 
     genres: [], 
@@ -60,7 +59,6 @@ export default function AddEditMovieModal({
 
     const handleValidate = async() => {
         try{
-            console.log("xddxd")
             setErrors({});
             await movieSchema.validate(values, {abortEarly: false});
             if (editable) {
@@ -135,7 +133,7 @@ export default function AddEditMovieModal({
                                 dark:bg-neutral-800/70 dark:text-neutral-100 dark:border-white/10 dark:placeholder:text-neutral-400
                               `}
                             />
-                            {errors.title && <p className="mt-1 text-xs text-red-600">{errors.title}</p>}
+                            {errors.title && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.title}</p>}
                         </div>
 
                          <div>
@@ -154,7 +152,7 @@ export default function AddEditMovieModal({
                               dark:bg-neutral-800/70 dark:text-neutral-100 dark:border-white/10 dark:placeholder:text-neutral-400
                             `}
                           />
-                          {errors.year && <p className="mt-1 text-xs text-red-600">{errors.year}</p>}
+                          {errors.year && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.year}</p>}
                         </div>
 
                         <div>
@@ -173,7 +171,7 @@ export default function AddEditMovieModal({
                               dark:bg-neutral-800/70 dark:text-neutral-100 dark:border-white/10 dark:placeholder:text-neutral-400
                             `}
                           />
-                          {errors.posterUrl && <p className="mt-1 text-xs text-red-600">{errors.posterUrl}</p>}
+                          {errors.posterUrl && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.posterUrl}</p>}
                         </div>
                         <div>
                           <label className="mb-1 block text-sm font-medium text-neutral-800 dark:text-neutral-200">
@@ -190,7 +188,7 @@ export default function AddEditMovieModal({
                               dark:bg-neutral-800/70 dark:text-neutral-100 dark:border-white/10 dark:placeholder:text-neutral-400
                             `}
                           />
-                          {errors.description && <p className="mt-1 text-xs text-red-600">{errors.description}</p>}
+                          {errors.description && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.description}</p>}
                         </div>
 
                         <div className="mt-6 flex items-center justify-end gap-3">
