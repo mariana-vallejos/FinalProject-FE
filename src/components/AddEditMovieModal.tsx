@@ -1,30 +1,46 @@
 import type { Movie } from "../domain/Movie";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { movieSchema } from "../validators/MovieSchema";
+import type { MixedOptions } from "yup";
 
 type FieldType = "title" | "year" | "description" | "posterUrl";
 type ErrorsType = Partial<Record<FieldType, string>> ;
 
 type AddEditMovieProps = {
     open: Boolean;
-    onClose?: () => void;
-    onSubmit: (movie: Omit<Movie, 'id' | 'createdAt'>) => void;
+    editable? : Boolean;
+    initial?: Partial<Movie>;
+    onClose: () => void;
+    onEdit?: (movie: Movie) => void;
+    onSubmit?: (movie:Partial<Movie>) => void;
 }
 
-export default function AddEditMovieModal({open, onClose, onSubmit}: AddEditMovieProps){
+const EmptyForm: Partial<Movie> = {
+    id: 0,
+    title: "", 
+    year: 0, 
+    description: "", 
+    posterUrl: "", 
+    genres: [], 
+    cast: [], 
+    tags: [],
+    createdAt: new Date().toISOString()
+}
 
-    const [values, setValues] = useState(
-        {
-            title: "", 
-            year: 0, 
-            description: "", 
-            posterUrl: "", 
-            genres: [], 
-            cast: [], 
-            tags: []
-        }
-    );
+export default function AddEditMovieModal({
+    open, 
+    editable, 
+    onClose,
+    onSubmit, 
+    onEdit,
+    initial = EmptyForm
+}: AddEditMovieProps){
+
+    const [values, setValues] = useState(initial);
     const [errors, setErrors] = useState<ErrorsType>({});
+
+    useEffect(() => { setValues(initial); setErrors({}); }, [initial]);
+
 
     const mapYupErrors = (errors: any) => {
         const next: ErrorsType = {};
@@ -47,7 +63,22 @@ export default function AddEditMovieModal({open, onClose, onSubmit}: AddEditMovi
             console.log("xddxd")
             setErrors({});
             await movieSchema.validate(values, {abortEarly: false});
-            onSubmit(values);
+            if (editable) {
+                const movie: Movie = {
+                    id: values.id ?? 0,
+                    title: values.title ?? "",
+                    year: values.year ?? 0,
+                    description: values.description ?? "",
+                    posterUrl: values.posterUrl ?? "",
+                    genres: values.genres ?? [],
+                    cast: values.cast ?? [],
+                    tags: values.tags ?? [],
+                    createdAt: values.createdAt ?? new Date().toISOString()
+                };
+                onEdit!(movie);
+            } else {
+                onSubmit!(values);
+            }
         } catch(error: any) {
             mapYupErrors(error);
         }
@@ -68,7 +99,7 @@ export default function AddEditMovieModal({open, onClose, onSubmit}: AddEditMovi
             >
                 <div className="flex items-center justify-between px-6 pt-5 pb-3">
                   <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-                    Add a Movie
+                    {editable? "Edit Movie": "Add a movie"}
                   </h2>
 
                   <button

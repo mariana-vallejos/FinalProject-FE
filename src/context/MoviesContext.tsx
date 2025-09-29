@@ -15,7 +15,7 @@ type Action =
 
 const MoviesContext = createContext<{
   state: State;
-  addMovie: (m: Omit<Movie, "id" | "createdAt">) => Promise<void>;
+  addMovie: (movie: Partial<Movie>) => Promise<void>;
   editMovie: (m: Movie) => Promise<void>;
   deleteMovie: (id: number) => Promise<void>;
   addReview: (r: Omit<Review, "id" | "createdAt">) => Promise<void>;
@@ -32,8 +32,8 @@ function reducer(state: State, action: Action): State {
     case "EDIT_MOVIE":
       return {
         ...state,
-        movies: state.movies.map((m) =>
-          m.id === action.movie.id ? action.movie : m
+        movies: state.movies.map((movie) =>
+          movie.id === action.movie.id ? action.movie : movie
         ),
       };
     case "DELETE_MOVIE":
@@ -76,16 +76,33 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // funciones
-  const addMovie = async (movie: Omit<Movie, "id" | "createdAt">) => {
+  const addMovie = async (movie: Partial<Movie>) => {
     const db = await dbPromise;
     const rightNowDate = new Date().toISOString();
+
+    if (!movie.title || !movie.year || !movie.genres || !movie.description || !movie.posterUrl || !movie.cast || !movie.tags) {
+      throw new Error("All required movie fields must be provided.");
+    }
+
     const id = await db.add("movies", {
-      ...movie,
+      title: movie.title,
+      year: movie.year,
+      genres: movie.genres,
+      description: movie.description,
+      posterUrl: movie.posterUrl,
+      cast: movie.cast,
+      tags: movie.tags,
       createdAt: rightNowDate
     });
     const newMovie: Movie = {
       id,
-      ...movie,
+      title: movie.title,
+      year: movie.year,
+      genres: movie.genres,
+      description: movie.description,
+      posterUrl: movie.posterUrl,
+      cast: movie.cast,
+      tags: movie.tags,
       createdAt: rightNowDate
     };
     dispatch({ type: "ADD_MOVIE", movie: newMovie });
