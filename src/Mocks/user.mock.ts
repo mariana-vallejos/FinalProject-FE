@@ -1,12 +1,4 @@
-export type Role = "guest" | "admin" | "user";
-
-export type User = {
-    name: string;
-    email: string;
-    role: Role;
-    avatar: string;
-    isLoggedIn: boolean;
-};
+import type { User } from "../domain/User";
 
 export const mockGuest: User = {
     name: "",
@@ -14,6 +6,7 @@ export const mockGuest: User = {
     role: "guest",
     avatar: "",
     isLoggedIn: false,
+    id: ""
 };
 
 export const mockAdmin: User = {
@@ -22,6 +15,7 @@ export const mockAdmin: User = {
     role: "admin",
     avatar: "https://i.pravatar.cc/40?img=12",
     isLoggedIn: true,
+    id: ""
 };
 
 export const mockUser: User = {
@@ -30,4 +24,5 @@ export const mockUser: User = {
     role: "user",
     avatar: "https://i.pravatar.cc/40?img=5",
     isLoggedIn: true,
+    id: ""
 };

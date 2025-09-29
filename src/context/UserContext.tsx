@@ -1,12 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { dbPromise } from "../db/db";
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  isAdmin?: boolean;
-}
+import type { User } from "../domain/User";
 
 interface UserContextType {
   user: User | null;
@@ -34,10 +28,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     const db = await dbPromise;
     const id = email;
     const newUser: User = {
-      id,
       email,
       name,
-      isAdmin: email === "admin@cinelog.com",
+      role: "guest",
+      isLoggedIn: true
     };
     await db.put("users", newUser);
     await db.put("session", id, "current");
