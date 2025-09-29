@@ -14,7 +14,15 @@ type AddEditMovieProps = {
 export default function AddEditMovieModal({open, onClose, onSubmit}: AddEditMovieProps){
 
     const [values, setValues] = useState(
-        {title: "", year: 0, description: "", posterUrl: "", genres: [], cast: [], tags: []}
+        {
+            title: "", 
+            year: 0, 
+            description: "", 
+            posterUrl: "", 
+            genres: [], 
+            cast: [], 
+            tags: []
+        }
     );
     const [errors, setErrors] = useState<ErrorsType>({});
 
