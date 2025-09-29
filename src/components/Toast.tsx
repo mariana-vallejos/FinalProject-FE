@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { X, Star, CheckCircle, AlertCircle } from "lucide-react";
-import type { ToastProps } from "../types/Toast";
+import type { ToastProps } from "../domain/Toast";
 
 export default function Toast({
   message,
