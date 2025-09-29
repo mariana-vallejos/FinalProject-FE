@@ -1,9 +1,10 @@
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Table } from "../../components/Table";
-import { movies, type Movie } from "../../Mocks/movies.mock";
 import { useState } from "react";
 import ConfirmModal from "../../components/ConfirmModal";
 import Navbar from "../../components/Navbar";
+import type { Movie } from "../../domain/Movie";
+import { movies } from "../../Mocks/movies.mock";
 
 function Dashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);

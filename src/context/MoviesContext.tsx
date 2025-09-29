@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { dbPromise, type PersistableMovie } from "../db/db";
-import { v4 as uuid } from "uuid";
+import { dbPromise } from "../db/db";
 import type { Movie } from "../domain/Movie";
 import type { Review } from "../domain/Review";
 import type { State } from "../domain/State";

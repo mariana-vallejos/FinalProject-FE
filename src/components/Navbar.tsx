@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router";
-import { mockGuest, mockAdmin, mockUser, type User } from "../Mocks/user.mock";
 import { MdLocalMovies } from "react-icons/md";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
+import type { User } from "../domain/User";
+import { mockAdmin } from "../Mocks/user.mock";
 
 type NavbarProps = {
     user?: User;
