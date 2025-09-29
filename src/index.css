@@ -1,25 +1,33 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Montserrat+Alternates:wght@600;700&display=swap");
 @import "tailwindcss";
 
-@theme{
-    --color-primary: #00A6E8;
-    --color-primary-bg: #F6F7F8;
+@theme {
+  --color-primary: #00a6e8;
+  --color-primary-bg: #f6f7f8;
 
-    --font-sans: "Montserrat", sans-serif;
-    --font-title: "Montserrat Alternates", sans-serif;
+  --font-sans: "Montserrat", sans-serif;
+  --font-title: "Montserrat Alternates", sans-serif;
+}
+
+body{
+    @apply bg-primary-bg
 }
 
 @layer components {
   .btn-secondary {
-    @apply rounded-xl border border-white/30 bg-white/30 px-4 py-2 text-sm font-medium
-           text-neutral-700 hover:bg-white/40 active:bg-white/50
-           dark:text-neutral-200 dark:bg-neutral-800/50 dark:hover:bg-neutral-800/70 dark:border-white/10;
+    @apply px-4 py-2 rounded-xl text-gray-50 hover:bg-gray-500 transition 
+        bg-gray-400 text-sm font-medium active:bg-white/50
+        dark:text-neutral-200 dark:bg-gray-600 dark:hover:bg-gray-700 dark:border-white/10;
   }
 
   .btn-primary {
     @apply rounded-xl px-4 py-2 text-sm font-semibold text-white shadow
-           bg-[#00A6E8] hover:brightness-110 active:brightness-95
+           bg-primary hover:brightness-110 active:brightness-95
            focus:outline-none focus:ring-4 focus:ring-[rgba(0,166,232,0.35)];
+  }
+
+  .btn-alert{
+    @apply px-4 py-2 rounded-xl text-sm bg-red-500 text-white font-semibold hover:bg-red-600 transition
   }
 
   .input-base {
@@ -27,45 +35,48 @@
             bg-white/70 text-neutral-900 placeholder:text-neutral-500
             focus:outline-none focus:ring-4
             dark:bg-neutral-800/70 dark:text-neutral-100 dark:border-white/10 dark:placeholder:text-neutral-400;
-    }
-    
-    .input-error {
-    @apply border-red-500 focus:ring-red-300;
-    }
+  }
 
-    .error-message {
-        @apply mt-1 text-xs text-red-600 dark:text-red-400;
-    }
-    
-    .input-normal {
+  .input-error {
+    @apply border-red-500 focus:ring-red-300;
+  }
+
+  .error-message {
+    @apply mt-1 text-xs text-red-600 dark:text-red-400;
+  }
+
+  .input-normal {
     @apply border-white/30 focus:ring-[rgba(0,166,232,0.35)];
-    }
-    
-    .movie-form-modal-container {
-        @apply fixed inset-0 z-50 flex items-center justify-center
-    }
-    
-    .movie-form-modal-card {
-        @apply relative mx-4 w-full max-w-lg rounded-2xl
+  }
+
+  .movie-form-modal-container {
+    @apply fixed inset-0 z-50 flex items-center justify-center;
+  }
+
+  .movie-form-modal-card {
+    @apply relative mx-4 w-full max-w-lg rounded-2xl
         border border-gray-200 bg-white
         dark:border-gray-700 dark:bg-gray-800
-        shadow-2xl px-3 py-3
-    }
+        shadow-2xl px-3 py-3;
+  }
 
-    .eye-button{
-        @apply absolute right-2 top-8 text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300;
-    }
-    
-    
-    .close-button{
-        @apply inline-flex h-9 w-9 items-center justify-center rounded-xl
+  .modal-backdrop {
+    @apply inset-0 bg-black/10 backdrop-blur-sm;
+  }
+
+  .eye-button {
+    @apply absolute right-2 top-8 text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300;
+  }
+
+  .close-button {
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-xl
         border border-white/30 bg-white/30 text-neutral-700
         hover:bg-neutral-300 active:bg-white/50
         dark:bg-neutral-800/50 dark:text-neutral-200 dark:border-white/10
-        transition-all duration-200 ease-in-out
-    }
+        transition-all duration-200 ease-in-out;
+  }
 
-    .form-label{
-        @apply mb-1 block text-sm font-medium text-neutral-800 dark:text-neutral-200
-    }
+  .form-label {
+    @apply mb-1 block text-sm font-medium text-neutral-800 dark:text-neutral-200;
+  }
 }

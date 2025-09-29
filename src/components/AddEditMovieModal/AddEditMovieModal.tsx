@@ -67,7 +67,7 @@ export default function AddEditMovieModal({
 
   return (
     <div className="movie-form-modal-container">
-      <div className="absolute inset-0 bg-black/10 backdrop-blur-sm" />
+      <div className="absolute modal-backdrop" />
       <div className="movie-form-modal-card">
         <div className="flex items-center justify-between px-6 pt-5 pb-3">
           <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
