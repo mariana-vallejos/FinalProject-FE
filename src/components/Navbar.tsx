@@ -3,6 +3,7 @@ import { MdLocalMovies } from "react-icons/md";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useUser } from "../context/UserContext";
+import { i18n } from "../i18n";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function Navbar() {
     if (!isLoggedIn) {
       return (
         <a href="/" className="hover:text-primary">
-          Home
+          {i18n.navbar.home}
         </a>
       );
     }
@@ -22,13 +23,13 @@ function Navbar() {
       return (
         <>
           <a href="/" className="hover:text-primary">
-            Home
+            {i18n.navbar.home}
           </a>
           <a href="/admin" className="hover:text-primary">
-            Movies
+            {i18n.navbar.movies}
           </a>
           <a href="/reviews" className="hover:text-primary">
-            Reviews
+            {i18n.navbar.reviews}
           </a>
         </>
       );
@@ -37,10 +38,10 @@ function Navbar() {
       return (
         <>
           <a href="/" className="hover:text-primary">
-            Home
+            {i18n.navbar.home}
           </a>
           <a href="/watchlist" className="hover:text-primary">
-            Watch list
+            {i18n.navbar.WatchList}
           </a>
         </>
       );
@@ -51,7 +52,7 @@ function Navbar() {
     <nav className="bg-primary-bg px-6 py-3 border-b border-gray-300">
       <div className="flex justify-between items-center">
         <div className="text-xl font-title flex items-center">
-          <MdLocalMovies /> CineLog
+          <MdLocalMovies /> {i18n.cinelog}
         </div>
 
         <div className="hidden md:flex items-center gap-6">{menuItems()}</div>
@@ -62,7 +63,7 @@ function Navbar() {
               onClick={() => navigate("/login")}
               className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-500"
             >
-              Sign In
+              {i18n.navbar.signin}
             </button>
           ) : (
             <div className="flex items-center gap-2">
@@ -78,7 +79,7 @@ function Navbar() {
                 onClick={logout}
                 className="ml-3 text-sm text-red-500 hover:underline"
               >
-                Logout
+                {i18n.navbar.logout}
               </button>
             </div>
           )}
@@ -99,7 +100,7 @@ function Navbar() {
               onClick={() => navigate("/login")}
               className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-500 w-fit"
             >
-              Sign In
+              {i18n.navbar.signin}
             </button>
           ) : (
             <div className="flex items-center gap-2">
@@ -115,7 +116,7 @@ function Navbar() {
                 onClick={logout}
                 className="ml-3 text-sm text-red-500 hover:underline"
               >
-                Logout
+                {i18n.navbar.logout}
               </button>
             </div>
           )}
