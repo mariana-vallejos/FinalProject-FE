@@ -11,6 +11,7 @@ const AddEditMovieModal = lazy(
   () => import("../../components/AddEditMovieModal/AddEditMovieModal")
 );
 const ConfirmModal = lazy(() => import("../../components/ConfirmModal"));
+const Toast = lazy(() => import('../../components/Toast'))
 
 function Dashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -18,6 +19,8 @@ function Dashboard() {
   const [isEditMovieModalOpen, setIsEditMovieModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const { state, addMovie, deleteMovie, editMovie } = useMovies();
+  const [showToast, setShowToast] = useState(false);
+  const [messageToast, setMessageToast] = useState('')
 
   const handleOpenConfirm = (id: number) => {
     setSelectedId(id);
@@ -31,6 +34,8 @@ function Dashboard() {
     }
     setIsDeleteModalOpen(false);
     setSelectedId(null);
+    setMessageToast('Movie deleted successfully')
+    setShowToast(true)
   };
 
   return (
@@ -38,15 +43,16 @@ function Dashboard() {
       <div>
         <Navbar />
         <div className="min-h-screen bg-primary-bg px-6 py-10">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="font-title text-3xl font-bold text-gray-800">
+          <div className="md:flex items-center justify-between mb-6">
+            <h1 className="font-title text-3xl font-bold text-gray-800 mb-2">
               Movie Management
             </h1>
             <button
               onClick={() => {
                 setisAddMovieModalOpen(true);
               }}
-              className="bg-primary hover:bg-blue-500 text-white px-6 py-2 rounded-3xl shadow transition-colors"
+              className="btn-primary"
+              aria-label="Add new movie"
             >
               Add New Movie
             </button>
@@ -69,12 +75,14 @@ function Dashboard() {
                           setSelectedId(row.id);
                         }}
                         className="text-gray-500 hover:text-blue-600 transition-colors"
+                        aria-label={`Edit ${row.title}`}
                       >
                         <MdEdit size={20} />
                       </button>
                       <button
                         onClick={() => handleOpenConfirm(row.id)}
                         className="text-gray-500 hover:text-red-600 transition-colors"
+                        aria-label={`Delete ${row.title}`}
                       >
                         <MdDelete size={20} />
                       </button>
@@ -84,7 +92,9 @@ function Dashboard() {
               ]}
             />
             <Suspense
-              fallback={<LoadingModal label="Opening Confirm Delete Modal..." />}
+              fallback={
+                <LoadingModal label="Opening Confirm Delete Modal..." />
+              }
             >
               <ConfirmModal
                 isOpen={isDeleteModalOpen}
@@ -99,7 +109,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-      
+
       {isAddMovieModalOpen && (
         <Suspense
           fallback={<LoadingModal label="Opening Add Modie Modal..." />}
@@ -130,6 +140,15 @@ function Dashboard() {
             }}
           />
         </Suspense>
+      )}
+
+      {showToast && (
+        <Toast
+          message={messageToast}
+          type="success"
+          duration={3000}
+          onClose={() => setShowToast(false)}
+        />
       )}
     </>
   );
