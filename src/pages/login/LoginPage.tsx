@@ -14,27 +14,30 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useUser();
 
-  const initialValues: LoginForm = {
-    email: "",
-    password: "",
-  };
+  const initialValues: LoginForm = { email: "", password: "" };
 
   const validationSchema: Yup.ObjectSchema<LoginForm> = Yup.object({
     email: Yup.string().email("Invalid email").required("Email is mandatory"),
     password: Yup.string().required("Password is mandatory"),
   });
 
-  const handleSubmit = async (values: LoginForm) => {
+  const handleSubmit = async (
+    values: LoginForm,
+    { setSubmitting, setErrors }: any
+  ) => {
     try {
-      await login(values.email, values.email.split("@")[0]);
+      await login(values.email, values.password);
 
       if (values.email === "admin@cinelog.com") {
         navigate("/admin");
       } else {
         navigate("/");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed", error);
+      setErrors({ email: "Invalid credentials" });
+    } finally {
+      setSubmitting(false);
     }
   };
 
