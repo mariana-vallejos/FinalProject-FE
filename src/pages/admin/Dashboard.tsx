@@ -4,25 +4,28 @@ import { useState, lazy, Suspense } from "react";
 import ConfirmModal from "../../components/ConfirmModal";
 import Navbar from "../../components/Navbar";
 import type { Movie } from "../../domain/Movie";
-import { movies } from "../../Mocks/movies.mock";
-import AddEditMovieModal from "../../components/AddEditMovieModal";
 import { useMovies } from "../../context/MoviesContext";
 import LoadingModal from "../../components/LoadingModalFallback";
 
+const AddEditMovieModal = lazy(() => import("../../components/AddEditMovieModal"));
+
 function Dashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isAddModieModalOpen, setIsAddModieModalOpen] = useState(false);
+  const [isAddMovieModalOpen, setisAddMovieModalOpen] = useState(false);
+  const [isEditMovieModalOpen, setIsEditMovieModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const {state, addMovie, deleteMovie} = useMovies();
+  const {state, addMovie, deleteMovie, editMovie} = useMovies();
 
   const handleOpenConfirm = (id: number) => {
     setSelectedId(id);
     setIsDeleteModalOpen(true);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     console.log("Delete movie with id:", selectedId);
-    // delete movie logic here
+    if(selectedId != null) {
+      await deleteMovie(selectedId);
+    }
     setIsDeleteModalOpen(false);
     setSelectedId(null);
   };
@@ -38,8 +41,7 @@ function Dashboard() {
           </h1>
           <button
             onClick={() => {
-              setIsAddModieModalOpen(true);
-              import("../../components/AddEditMovieModal");
+              setisAddMovieModalOpen(true);
             }}
             className="bg-primary hover:bg-blue-500 text-white px-6 py-2 rounded-3xl shadow transition-colors"
           >
@@ -49,7 +51,7 @@ function Dashboard() {
 
         <div>
           <Table<Movie>
-            data={movies}
+            data={state.movies}
             columns={[
               { key: "title", header: "Movie" },
               { key: "year", header: "Year" },
@@ -59,7 +61,10 @@ function Dashboard() {
                 render: (row) => (
                   <div className="flex justify-center gap-4">
                     <button
-                      onClick={() => console.log("Aca se renderiza para editar")}
+                      onClick={() => {
+                        setIsEditMovieModalOpen(true);
+                        setSelectedId(row.id);
+                      }}
                       className="text-gray-500 hover:text-blue-600 transition-colors"
                     >
                       <MdEdit size={20} />
@@ -90,14 +95,29 @@ function Dashboard() {
       </div>
       
     </div>
-    {isAddModieModalOpen && (
+    {isAddMovieModalOpen && (
       <Suspense fallback={<LoadingModal label="Opening Add Modie Modal..."/>}>
         <AddEditMovieModal
-          open={isAddModieModalOpen}
-          onClose={() => setIsAddModieModalOpen(false)}
+          open={isAddMovieModalOpen}
+          onClose={() => setisAddMovieModalOpen(false)}
           onSubmit={async (input) => {
             await addMovie(input);
-            setIsAddModieModalOpen(false);
+            setisAddMovieModalOpen(false);
+          }}
+        />
+      </Suspense>
+    )}
+
+    {isEditMovieModalOpen && (
+      <Suspense fallback={<LoadingModal label="Opening Edit Modie Modal..."/>}>
+        <AddEditMovieModal
+          open={isEditMovieModalOpen}
+          initial={state.movies.find((movie) => movie.id === selectedId)}
+          editable={true}
+          onClose={() => setIsEditMovieModalOpen(false)}
+          onEdit={async (input) => {
+            await editMovie(input);
+            setIsEditMovieModalOpen(false);
           }}
         />
       </Suspense>
