@@ -53,7 +53,7 @@ const ReviewComponent = ({ review, readonly }: ReviewComponentProps) => {
           className="rounded-4xl h-12"
         />
         <div>
-          <h5 className="font-semibold text-md">{review.user?.name}</h5>
+          <h5 className="font-semibold text-[16px]">{review.user?.name}</h5>
           <p className="text-sm font-medium text-gray-400">{review.createdAt}</p>
         </div>
       </div>

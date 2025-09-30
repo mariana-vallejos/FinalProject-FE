@@ -1,6 +1,8 @@
 import type { Review } from "../domain/Review";
 
-export const reviewsMock: Review[] = [
+export const reviewsMock: (Review & {
+  user: { name: string; avatar: string };
+})[] = [
   {
     id: 1,
     userId: "john@gmail.com",
@@ -8,6 +10,10 @@ export const reviewsMock: Review[] = [
     rating: 2,
     text: "This movie is meh",
     createdAt: "2025-01-01T00:00:00.000Z",
+    user: {
+      name: "John Doe",
+      avatar: "https://i.pravatar.cc/150?img=1",
+    },
   },
   {
     id: 2,
@@ -16,6 +22,10 @@ export const reviewsMock: Review[] = [
     rating: 5,
     text: "Absolutely stunning!",
     createdAt: "2025-01-01T00:00:00.000Z",
+    user: {
+      name: "John Doe",
+      avatar: "https://i.pravatar.cc/150?img=1",
+    },
   },
   {
     id: 3,
@@ -24,6 +34,10 @@ export const reviewsMock: Review[] = [
     rating: 4,
     text: "This movie is great",
     createdAt: "2025-01-01T00:00:00.000Z",
+    user: {
+      name: "John Doe",
+      avatar: "https://i.pravatar.cc/150?img=1",
+    },
   },
   {
     id: 4,
@@ -32,5 +46,9 @@ export const reviewsMock: Review[] = [
     rating: 5,
     text: "Absolutely stunning!",
     createdAt: "2025-01-01T00:00:00.000Z",
+    user: {
+      name: "John Doe",
+      avatar: "https://i.pravatar.cc/150?img=1",
+    },
   },
 ];
