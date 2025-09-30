@@ -6,7 +6,6 @@ import type { Movie } from "../../domain/Movie";
 import { useMovies } from "../../context/MoviesContext";
 import LoadingModal from "../../components/LoadingModalFallback";
 import MovieFormWizard from "../../components/MovieWizardModal/MovieFormWizard";
-import { movies } from "../../Mocks/movies.mock";
 
 const AddEditMovieModal = lazy(
   () => import("../../components/AddEditMovieModal/AddEditMovieModal")
