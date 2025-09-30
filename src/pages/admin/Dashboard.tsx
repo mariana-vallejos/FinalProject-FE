@@ -42,11 +42,11 @@ function Dashboard() {
     <>
       <div>
         <Navbar />
-        <div className="min-h-screen bg-primary-bg px-6 py-10">
+        <div className="min-h-screen bg-primary-bg dark:bg-gray-700 px-6 py-10">
           <div className="md:flex items-center justify-between mb-6">
-            <h1 className="font-title text-3xl font-bold text-gray-800 mb-2">
+            <h2 className="font-title text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">
               Movie Management
-            </h1>
+            </h2>
             <button
               onClick={() => {
                 setisAddMovieModalOpen(true);

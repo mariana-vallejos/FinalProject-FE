@@ -14,7 +14,7 @@ type TableProps<T> = {
 export function Table<T extends Record<string, any>>({ data, columns }: TableProps<T>) {
     return (
         <div className="overflow-x-auto rounded-2xl shadow">
-            <table className="min-w-full border border-gray-100 bg-white">
+            <table className="min-w-full border border-gray-100 bg-white dark:bg-blue-200">
                 <thead className="bg-primary text-white">
                     <tr>
                         {columns.map((col) => (
@@ -26,7 +26,7 @@ export function Table<T extends Record<string, any>>({ data, columns }: TablePro
                 </thead>
                 <tbody>
                 {data.map((row, idx) => (
-                    <tr key={idx} className="border-t border-gray-100 hover:bg-gray-50">
+                    <tr key={idx} className="border-t border-gray-100 hover:bg-gray-50 dark:hover:bg-blue-300">
                         {columns.map((col) => (
                             <td 
                                 key={col.key as string} 
