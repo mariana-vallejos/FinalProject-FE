@@ -27,8 +27,8 @@ export default function MovieFormWizard({
   onEdit,
   initial,
 }: MovieFormWizardProps){
-      const [step, setStep] = useState<number>(0);
-
+    
+    const [step, setStep] = useState<number>(0);
 
     if (!open) return null;
     const initialValues = useMemo(() => ({ ...makeEmptyMovieDraft(), ...(initial) }),[initial]);
@@ -36,6 +36,7 @@ export default function MovieFormWizard({
     const handleSubmit = (movieValue: Partial<Movie>) => {
         if (editable && onEdit) {
             const movie: Movie = toMovie(movieValue);
+            console.log("is editable")
             onEdit(movie);
         } else if (onSubmit) {
             onSubmit(movieValue);
