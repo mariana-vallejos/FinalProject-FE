@@ -1,12 +1,12 @@
 import { MdDelete, MdEdit } from "react-icons/md";
-import type { Review } from "../domain/Review";
+import type { ReviewWithUser } from "../domain/Review";
 import StarsRating from "./StarsRating";
 import { lazy, useState } from "react";
 
 const DeleteReviewModal = lazy(() => import('../components/ConfirmModal'))
 
 type ReviewComponentProps = {
-  review: Review;
+  review: ReviewWithUser;
   readonly: boolean;
 };
 
@@ -48,12 +48,12 @@ const ReviewComponent = ({ review, readonly }: ReviewComponentProps) => {
 
       <div className="flex gap-3 pb-3">
         <img
-          src={review.user.avatar}
-          alt={review.user.name}
+          src={review.user?.avatar || ''}
+          alt={review.user?.name || ''}
           className="rounded-4xl h-12"
         />
         <div>
-          <h5 className="font-semibold text-md">{review.user.name}</h5>
+          <h5 className="font-semibold text-md">{review.user?.name}</h5>
           <p className="text-sm font-medium text-gray-400">{review.createdAt}</p>
         </div>
       </div>

@@ -2,11 +2,23 @@ import Navbar from "../../components/Navbar";
 import MovieCard from "../../components/MovieCard";
 import { useMovies } from "../../context/MoviesContext";
 import ReviewComponent from "../../components/ReviewComponent";
-import { reviews } from "../../Mocks/reviews.mock";
+import { useEffect, useState } from "react";
+import type { ReviewWithUser } from "../../domain/Review";
+import { getReviewsWithUsers } from "../../utils/getReviewsWithUsers";
 
 function Home() {
 
   const {state} = useMovies();
+
+  const [reviews, setReviews] = useState<ReviewWithUser[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const result = await getReviewsWithUsers(1);
+      console.log(result)
+      setReviews(result);
+    })();
+  }, []);
 
   return (
     <>
