@@ -6,6 +6,7 @@ import Navbar from "../../components/Navbar";
 import type { Movie } from "../../domain/Movie";
 import { useMovies } from "../../context/MoviesContext";
 import LoadingModal from "../../components/LoadingModalFallback";
+import MovieFormWizard from "../../components/MovieWizardModal/MovieFormWizard";
 
 const AddEditMovieModal = lazy(() => import("../../components/AddEditMovieModal/AddEditMovieModal"));
 
@@ -97,7 +98,7 @@ function Dashboard() {
     </div>
     {isAddMovieModalOpen && (
       <Suspense fallback={<LoadingModal label="Opening Add Modie Modal..."/>}>
-        <AddEditMovieModal
+        <MovieFormWizard
           open={isAddMovieModalOpen}
           onClose={() => setisAddMovieModalOpen(false)}
           onSubmit={async (input) => {
@@ -110,7 +111,7 @@ function Dashboard() {
 
     {isEditMovieModalOpen && (
       <Suspense fallback={<LoadingModal label="Opening Edit Modie Modal..."/>}>
-        <AddEditMovieModal
+        <MovieFormWizard
           open={isEditMovieModalOpen}
           initial={state.movies.find((movie) => movie.id === selectedId)}
           editable={true}
