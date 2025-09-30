@@ -10,10 +10,11 @@ export const reviews: Review[] = [
       role: "user",
       avatar: "https://i.pravatar.cc/40?img=5",
       isLoggedIn: true,
+      password: "2346"
     },
     rating: 3.5,
     text: "Absolutely loved this movie! The plot was captivating, and the visuals were stunning. The actors delivered outstanding performances, making it a truly immersive experience. Highly recommend!",
-    tags: [],
+    tags: ["netflix", "primevideo", "cinema"],
     createdAt: "2025-03-21"
   },
 ];

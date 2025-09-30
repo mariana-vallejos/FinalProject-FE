@@ -17,8 +17,8 @@ function Home() {
         {i18n.toast.showToast}
       </button>
 
-      <section className="bg-white w-1/2 mx-12">
-        <ReviewComponent review={reviews[0]} />
+      <section className="bg-white dark:bg-gray-600 w-1/2 mx-12">
+        <ReviewComponent review={reviews[0]} readonly={false}/>
       </section>
       {showToast && (
         <Toast
