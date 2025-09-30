@@ -4,14 +4,14 @@ import Step from "./Step";
 type BreadCrumbStepsProps = {
     steps: number[];
     activeStep?: number;
-    onStepClick?: (step: number) => void;
+    onClick: (step: number) => void;
 };
 
-export default function BreadCrumbSteps({steps, activeStep, onStepClick}: BreadCrumbStepsProps) {
+export default function BreadCrumbSteps({steps, activeStep, onClick}: BreadCrumbStepsProps) {
     return(
-        <div className="breadcrumb-steps">
+        <div className="breadcrumb-steps pt-6">
             {steps.map((step, stepIndex) => (
-                <Step key={step} stepNumber={step} active={stepIndex === activeStep} onClick={onStepClick ? () => onStepClick(stepIndex) : undefined} />
+                <Step key={step} stepNumber={step} active={stepIndex === activeStep} onClick={() => onClick(stepIndex)} />
             ))}
         </div>
     );
