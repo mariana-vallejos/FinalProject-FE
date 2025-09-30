@@ -5,6 +5,7 @@ import Navbar from "../../components/Navbar";
 import type { Movie } from "../../domain/Movie";
 import { useMovies } from "../../context/MoviesContext";
 import LoadingModal from "../../components/LoadingModalFallback";
+import MovieFormWizard from "../../components/MovieWizardModal/MovieFormWizard";
 import { movies } from "../../Mocks/movies.mock";
 
 const AddEditMovieModal = lazy(
@@ -13,10 +14,13 @@ const AddEditMovieModal = lazy(
 const ConfirmModal = lazy(() => import("../../components/ConfirmModal"));
 const Toast = lazy(() => import('../../components/Toast'))
 
+type WizardMode = "create" | "edit";
+
 function Dashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isAddMovieModalOpen, setisAddMovieModalOpen] = useState(false);
-  const [isEditMovieModalOpen, setIsEditMovieModalOpen] = useState(false);
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const [wizardMode, setWizardMode] = useState<WizardMode>("create");
+
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const { state, addMovie, deleteMovie, editMovie } = useMovies();
   const [showToast, setShowToast] = useState(false);
@@ -25,6 +29,10 @@ function Dashboard() {
   const handleOpenConfirm = (id: number) => {
     setSelectedId(id);
     setIsDeleteModalOpen(true);
+  };
+
+  const closeWizard = () => {
+    setIsWizardOpen(false);
   };
 
   const handleDelete = async () => {
@@ -49,7 +57,8 @@ function Dashboard() {
             </h2>
             <button
               onClick={() => {
-                setisAddMovieModalOpen(true);
+                setWizardMode("create");
+                setIsWizardOpen(true);
               }}
               className="btn-primary"
               aria-label="Add new movie"
@@ -60,7 +69,7 @@ function Dashboard() {
 
           <div>
             <Table<Movie>
-              data={movies}
+              data={state.movies}
               columns={[
                 { key: "title", header: "Movie" },
                 { key: "year", header: "Year" },
@@ -71,7 +80,8 @@ function Dashboard() {
                     <div className="flex justify-center gap-4">
                       <button
                         onClick={() => {
-                          setIsEditMovieModalOpen(true);
+                          setWizardMode("edit");
+                          setIsWizardOpen(true);
                           setSelectedId(row.id);
                         }}
                         className="text-gray-500 hover:text-blue-600 transition-colors"
@@ -110,46 +120,25 @@ function Dashboard() {
         </div>
       </div>
 
-      {isAddMovieModalOpen && (
-        <Suspense
-          fallback={<LoadingModal label="Opening Add Modie Modal..." />}
-        >
-          <AddEditMovieModal
-            open={isAddMovieModalOpen}
-            onClose={() => setisAddMovieModalOpen(false)}
-            onSubmit={async (input) => {
-              await addMovie(input);
-              setisAddMovieModalOpen(false);
-            }}
-          />
-        </Suspense>
-      )}
 
-      {isEditMovieModalOpen && (
-        <Suspense
-          fallback={<LoadingModal label="Opening Edit Modie Modal..." />}
-        >
-          <AddEditMovieModal
-            open={isEditMovieModalOpen}
-            initial={state.movies.find((movie) => movie.id === selectedId)}
-            editable={true}
-            onClose={() => setIsEditMovieModalOpen(false)}
-            onEdit={async (input) => {
-              await editMovie(input);
-              setIsEditMovieModalOpen(false);
-            }}
-          />
-        </Suspense>
-      )}
-
-      {showToast && (
-        <Toast
-          message={messageToast}
-          type="success"
-          duration={3000}
-          onClose={() => setShowToast(false)}
+    {isWizardOpen && (
+      <Suspense fallback={<LoadingModal label="Opening Edit Modie Modal..."/>}>
+        <MovieFormWizard
+          open={isWizardOpen}
+          initial={state.movies.find((movie) => movie.id === selectedId)}
+          editable={wizardMode === "edit"}
+          onClose={closeWizard}
+          onEdit={async (input) => {
+            await editMovie(input);
+            closeWizard();
+          }}
+          onSubmit={async (draft) => {
+            await addMovie(draft as Movie);
+            closeWizard();
+          }}
         />
-      )}
+      </Suspense>
+    )}
     </>
   );
 }
