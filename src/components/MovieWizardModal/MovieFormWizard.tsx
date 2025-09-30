@@ -6,7 +6,7 @@ import { buildTouched, makeEmptyMovieDraft, mapYupToMovieErrors, toMovie, type M
 import { Form, Formik, type FormikProps } from "formik";
 import { movieSchema } from "../../validators/MovieSchema";
 import * as yup from "yup";
-import { fields, step1Keys, step2Keys, type FieldType } from "../AddEditMovieModal/movieFormFields";
+import { step1Keys, step2Keys, type FieldType } from "../AddEditMovieModal/movieFormFields";
 import { MovieDetailsSchema } from "../../validators/MovieDetailsSchema";
 import AddDetailsMovie from "../AddEditMovieModal/AddDetailsMovie";
 
@@ -56,6 +56,27 @@ export default function MovieFormWizard({
         }
     }
 
+    type StepType = {
+      schema: yup.AnyObjectSchema;
+      keys: readonly FieldType[];
+    }
+    
+    const stepsData: StepType[] = [
+      { schema: movieSchema, keys: step1Keys },
+      { schema: MovieDetailsSchema, keys: step2Keys }
+    ];
+
+    const goToStep = async (formik: FormikProps<MovieDraft>, wantedStep: number) => {
+        if(wantedStep > step){
+          const operationStatus = await validateStepOrShow(formik, stepsData[step].schema, stepsData[step].keys);
+          if(operationStatus) setStep(wantedStep);
+        } else {
+          console.log("going back");
+          setStep(wantedStep);
+        }
+    }
+    
+
     return(
         <div className="movie-form-modal-container">
             <div className="absolute inset-0 bg-black/10 backdrop-blur-sm" />
@@ -72,17 +93,15 @@ export default function MovieFormWizard({
                 </div>
                 <div className="px-6 pb-6">
 
-
-                <BreadCrumbSteps
-                  steps={[1, 2]}
-                  activeStep={step}
-                  onStepClick={(step) => {
-                    setStep(step)
-                  }}
-                />
+                
                 <Formik<MovieDraft> initialValues={initialValues} validationSchema={movieSchema.concat(MovieDetailsSchema)} onSubmit={handleSubmit}>
                     {(formik) => (
                         <Form className="space-y-4">
+                          <BreadCrumbSteps
+                            steps={[1, 2]}
+                            activeStep={step}
+                            onClick={(step) => {goToStep(formik, step)}}
+                          />
                             {step === 0 && <AddEditMovieModal />}
                             {step === 1 && <AddDetailsMovie />}
                             <div className="mt-6 flex items-center justify-end gap-3">
@@ -90,7 +109,9 @@ export default function MovieFormWizard({
                                 <button
                                   type="button"
                                   className="btn-secondary"
-                                  onClick={() => setStep(0)}
+                                  onClick={() => {
+                                    goToStep(formik, 0);
+                                  }}
                                 >
                                   Back
                                 </button>
@@ -100,9 +121,8 @@ export default function MovieFormWizard({
                                 <button
                                   type="button"
                                   className="btn-primary"
-                                  onClick={async () => {
-                                    const ok = await validateStepOrShow(formik, movieSchema, step1Keys);
-                                    if (ok) setStep(1);
+                                  onClick={() => {
+                                    goToStep(formik, 1);
                                   }}
                                 >
                                   Next
