@@ -4,6 +4,7 @@ import type { Movie } from "../domain/Movie";
 import type { Review } from "../domain/Review";
 import type { State } from "../domain/State";
 import { moviesMock } from "../Mocks/movies.mock";
+import { reviewsMock } from "../Mocks/reviews.mock";
 
 type Action =
   | { type: "SET_DATA"; movies: Movie[]; reviews: Review[] }
@@ -91,10 +92,31 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
+      if (reviewRows.length === 0) {
+        const alreadySeeded = localStorage.getItem("reviews.seeded") === "1";
+        if (!alreadySeeded) {
+          const tx = db.transaction("reviews", "readwrite");
+          const store = tx.objectStore("reviews");
+
+          await Promise.all(
+            reviewsMock.map(async (review) => {
+              const { id: _ignore, ...insertable } = review;
+              await store.add({
+                ...insertable,
+                createdAt: insertable.createdAt ?? new Date().toISOString(),
+              });
+            })
+          );
+          await tx.done;
+          localStorage.setItem("reviews.seeded", "1");
+        }
+      }
+
       const freshMovies = await db.getAll("movies");
+      const freshReviews = await db.getAll("reviews");
 
       const movies: Movie[] = freshMovies.map((movie) => ( {id: movie.id!, ...movie} ));
-      const reviews: Review[] = reviewRows.map((review) => ( {id: review.id!, ...review} ));
+      const reviews: Review[] = freshReviews.map((review) => ( {id: review.id!, ...review} ));
       dispatch({ type: "SET_DATA", movies, reviews });
     })();
   }, []);
