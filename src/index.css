@@ -6,8 +6,8 @@
     --color-primary-bg: #F6F7F8;
     --color-primary--unactive: #398BAC;
 
-  --font-sans: "Montserrat", sans-serif;
-  --font-title: "Montserrat Alternates", sans-serif;
+    --font-sans: "Montserrat", sans-serif;
+    --font-title: "Montserrat Alternates", sans-serif;
 }
 
 body{
