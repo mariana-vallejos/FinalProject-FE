@@ -11,7 +11,6 @@ export type InputFieldProps = {
 export default function InputField({field, error, touched, type, placeholder}: InputFieldProps){
 
     const isTextarea = type === "textarea";
-
     return (
         <div key={field} className="relative">
           <label className="form-label">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
