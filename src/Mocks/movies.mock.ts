@@ -1,32 +1,70 @@
 import type { Movie } from "../domain/Movie";
 
-export const movies: Movie[] = [
-    {
-        id: 1, title: "The Discovery", year: 2017,
-        genres: [],
-        description: "",
-        cast: [],
-        createdAt: ""
-    },
-    {
-        id: 2, title: "Silent Night", year: 2021,
-        genres: [],
-        description: "",
-        cast: [],
-        createdAt: ""
-    },
-    {
-        id: 3, title: "Tunnel", year: 1998,
-        genres: [],
-        description: "",
-        cast: [],
-        createdAt: ""
-    },
-    {
-        id: 4, title: "The Notebook", year: 2004,
-        genres: [],
-        description: "",
-        cast: [],
-        createdAt: ""
-    },
+export const moviesMock: Movie[] = [
+  {
+    id: 1,
+    title: "The Starry Night",
+    year: 2022,
+    description: "A contemplative journey under Van Gogh's sky.",
+    posterUrl: "https://picsum.photos/400/600?random=1",
+    genres: ["Drama"],
+    cast: ["A. Protagonist"],
+    tags: ["art", "night"],
+    createdAt: "2025-01-01T00:00:00.000Z",
+  },
+  {
+    id: 2,
+    title: "Interstellar",
+    year: 2014,
+    description: "Love, gravity, and time.",
+    posterUrl: "https://picsum.photos/400/600?random=2",
+    genres: ["Sci-Fi", "Drama"],
+    cast: ["Matthew McConaughey", "Anne Hathaway"],
+    tags: ["space", "wormholes"],
+    createdAt: "2025-01-01T00:00:00.000Z",
+  },
+  {
+    id: 3,
+    title: "Inception",
+    year: 2010,
+    description: "Dreams within dreams.",
+    posterUrl: "https://picsum.photos/400/600?random=3",
+    genres: ["Sci-Fi", "Thriller"],
+    cast: ["Leonardo DiCaprio"],
+    tags: ["dream", "heist"],
+    createdAt: "2025-01-01T00:00:00.000Z",
+  },
+  {
+    id: 4,
+    title: "Arrival",
+    year: 2016,
+    description: "Language reshapes time.",
+    posterUrl: "https://picsum.photos/400/600?random=4",
+    genres: ["Sci-Fi"],
+    cast: ["Amy Adams"],
+    tags: ["aliens", "linguistics"],
+    createdAt: "2025-01-01T00:00:00.000Z",
+  },
+  {
+    id: 5,
+    title: "Blade Runner 2049",
+    year: 2017,
+    description: "What makes us human?",
+    posterUrl: "https://picsum.photos/400/600?random=5",
+    genres: ["Sci-Fi", "Neo-noir"],
+    cast: ["Ryan Gosling"],
+    tags: ["replicants", "future"],
+    createdAt: "2025-01-01T00:00:00.000Z",
+  },
+  {
+    id: 6,
+    title: "Dune: Part One",
+    year: 2021,
+    description: "Desert power.",
+    posterUrl: "https://picsum.photos/400/600?random=6",
+    genres: ["Sci-Fi"],
+    cast: ["Timothée Chalamet"],
+    tags: ["arrakis", "spice"],
+    createdAt: "2025-01-01T00:00:00.000Z",
+  },
 ];

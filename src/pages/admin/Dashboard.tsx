@@ -6,7 +6,7 @@ import type { Movie } from "../../domain/Movie";
 import { useMovies } from "../../context/MoviesContext";
 import LoadingModal from "../../components/LoadingModalFallback";
 import MovieFormWizard from "../../components/MovieWizardModal/MovieFormWizard";
-import { movies } from "../../Mocks/movies.mock";
+import { makeEmptyMovieDraft } from "../../components/AddEditMovieModal/movieFormHelpers";
 
 const AddEditMovieModal = lazy(
   () => import("../../components/AddEditMovieModal/AddEditMovieModal")
@@ -125,7 +125,7 @@ function Dashboard() {
       <Suspense fallback={<LoadingModal label="Opening Edit Modie Modal..."/>}>
         <MovieFormWizard
           open={isWizardOpen}
-          initial={state.movies.find((movie) => movie.id === selectedId)}
+          initial={wizardMode === "edit" ? state.movies.find((movie) => movie.id === selectedId) : makeEmptyMovieDraft()}
           editable={wizardMode === "edit"}
           onClose={closeWizard}
           onEdit={async (input) => {
