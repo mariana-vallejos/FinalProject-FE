@@ -7,12 +7,14 @@ interface UserContextType {
   user: User;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  loading: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User>(defaultGuest);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -22,6 +24,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         const savedUser = await db.get("users", session);
         setUser(savedUser ?? defaultGuest);
       }
+      setLoading(false);
     })();
   }, []);
 
@@ -50,7 +53,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </UserContext.Provider>
   );
