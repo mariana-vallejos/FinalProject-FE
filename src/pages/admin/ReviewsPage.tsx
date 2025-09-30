@@ -1,26 +1,42 @@
+import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import Stars from "../../components/Stars";
 import { Table } from "../../components/Table";
-
-type UserReview = {
-  user: string;
-  movie: string;
-  rating: number;
-  text?: string;
-};
-
-const reviews: UserReview[] = [
-  { user: "Alice", movie: "The Discovery", rating: 4, text: "This movie is meh"},
-  { user: "Bob", movie: "Silent Night", rating: 5},
-];
+import { dbPromise } from "../../db/db";
+import { useMovies } from "../../context/MoviesContext";
+import type { User } from "../../domain/User";
 
 function ReviewsPage() {
+  const { state } = useMovies();
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const db = await dbPromise;
+      const allUsers = await db.getAll("users");
+      setUsers(allUsers);
+    })();
+  }, []);
+
+  const data = state.reviews.map((review) => {
+    const movie = state.movies.find((m) => m.id === review.movieId);
+    const user = users.find((u) => u.email === review.userId);
+
+    return {
+      user: user?.name ?? "Unknown",
+      movie: movie?.title ?? "Unknown",
+      rating: review.rating,
+      text: review.text,
+    };
+  });
+
+
   return (
     <div>
         <Navbar/>
         <div className="min-h-screen bg-primary-bg px-6 py-10">
-            <Table<UserReview>
-                data={reviews}
+            <Table
+                data={data}
                 columns={[
                     { key: "user", header: "User" },
                     { key: "movie", header: "Movie" },
