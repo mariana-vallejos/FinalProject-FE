@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useUser } from "../context/UserContext";
 import { i18n } from "../i18n";
+import { UserRole } from "../domain/User";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ function Navbar() {
         </a>
       );
     }
-    if (user.role === "admin") {
+    if (user.role === UserRole.Admin) {
       return (
         <>
           <a href="/" className="hover:text-primary">
@@ -34,7 +35,7 @@ function Navbar() {
         </>
       );
     }
-    if (user.role === "user") {
+    if (user.role === UserRole.User) {
       return (
         <>
           <a href="/" className="hover:text-primary">
