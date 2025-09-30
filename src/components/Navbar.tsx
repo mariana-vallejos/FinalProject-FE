@@ -29,7 +29,7 @@ function Navbar() {
           <a href="/admin" className="hover:text-primary">
             {i18n.navbar.movies}
           </a>
-          <a href="/reviews" className="hover:text-primary">
+          <a href="/admin/reviews" className="hover:text-primary">
             {i18n.navbar.reviews}
           </a>
         </>
