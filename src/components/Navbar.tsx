@@ -49,6 +49,27 @@ function Navbar() {
     }
   };
 
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+    user.name || "User"
+  )}&background=random&rounded=true&size=128`;
+
+  const ProfileSection = () => (
+    <div className="flex items-center gap-2">
+      <span className="font-semibold">{user.name}</span>
+      <img
+        src={user.avatar || avatarUrl}
+        alt="profile"
+        className="w-9 h-9 rounded-full border border-gray-200"
+      />
+      <button
+        onClick={logout}
+        className="ml-3 text-sm text-red-500 hover:underline"
+      >
+        {i18n.navbar.logout}
+      </button>
+    </div>
+  );
+
   return (
     <nav className="bg-primary-bg px-6 py-3 border-b border-gray-300">
       <div className="flex justify-between items-center">
@@ -67,22 +88,7 @@ function Navbar() {
               {i18n.navbar.signin}
             </button>
           ) : (
-            <div className="flex items-center gap-2">
-              <span className="font-semibold">{user.name}</span>
-              {user.avatar && (
-                <img
-                  src={user.avatar}
-                  alt="profile"
-                  className="w-9 h-9 rounded-full border border-gray-200"
-                />
-              )}
-              <button
-                onClick={logout}
-                className="ml-3 text-sm text-red-500 hover:underline"
-              >
-                {i18n.navbar.logout}
-              </button>
-            </div>
+            <ProfileSection />
           )}
         </div>
 
@@ -104,22 +110,7 @@ function Navbar() {
               {i18n.navbar.signin}
             </button>
           ) : (
-            <div className="flex items-center gap-2">
-              <span className="font-semibold">{user.name}</span>
-              {user.avatar && (
-                <img
-                  src={user.avatar}
-                  alt="profile"
-                  className="w-9 h-9 rounded-full border border-gray-200"
-                />
-              )}
-              <button
-                onClick={logout}
-                className="ml-3 text-sm text-red-500 hover:underline"
-              >
-                {i18n.navbar.logout}
-              </button>
-            </div>
+            <ProfileSection />
           )}
           {menuItems()}
         </div>
