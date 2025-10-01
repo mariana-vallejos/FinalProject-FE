@@ -3,7 +3,7 @@ import type { DBSchema } from "idb";
 import type { Movie } from "../domain/Movie";
 import type { Review } from "../domain/Review";
 import type { User } from "../domain/User";
-import { mockAdmin, mockUser } from "../Mocks/user.mock";
+import { mockAdmin, mockUsers } from "../Mocks/user.mock";
 
 export type PersistableMovie = Omit<Movie, "id"> & { id?: number };
 export type PersistableReview = Omit<Review, "id"> & { id?: number };
@@ -22,23 +22,24 @@ export const dbPromise = openDB<CineLogDB>("CineLogDB", 1, {
     const users = db.createObjectStore("users", { keyPath: "email" });
     db.createObjectStore("session");
 
-    users.put({
-      email: mockAdmin.email,
-      name: mockAdmin.name,
-      password: mockAdmin.password,
-      role: mockAdmin.role,
-      isLoggedIn: false,
-      watchlist: [],
-      watched: [],
-    });
-    users.put({
-      email: mockUser.email,
-      name: mockUser.name,
-      password: mockUser.password,
-      role: mockUser.role,
-      isLoggedIn: false,
-      watchlist: [],
-      watched: [],
-    });
+    // Seeder de usuarios
+    const seedUsers: User[] = [
+      {
+        ...mockAdmin,
+        isLoggedIn: false,
+        watchlist: [],
+        watched: [],
+      },
+      ...mockUsers.map((u) => ({
+        ...u,
+        isLoggedIn: false,
+        watchlist: [],
+        watched: [],
+      })),
+    ];
+
+    for (const user of seedUsers) {
+      users.put(user);
+    }
   },
 });

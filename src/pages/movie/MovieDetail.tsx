@@ -7,8 +7,6 @@ import { i18n } from "../../i18n";
 import { useUser } from "../../context/UserContext";
 import Toast from "../../components/Toast";
 import { useEffect, useState } from "react";
-import { getReviewsWithUsers } from "../../utils/getReviewsWithUsers";
-import type { ReviewWithUser } from "../../domain/Review";
 import ReviewComponent from "../../components/review/ReviewComponent";
 import AddEditReviewForm from "../../components/review/AddEditReviewForm";
 import { useMovieReviews } from "./hooks/useMovieReviews";
@@ -22,17 +20,10 @@ function MovieDetail() {
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error";
-  } | null>(null);  const [reviews, setReviews] = useState<ReviewWithUser[]>([]);
+  } | null>(null);
   const { myReview, otherReviews, addMyReview } = useMovieReviews(movieId);
 
   const movie = state.movies.find((m) => m.id === movieId);
-
-  useEffect(() => {
-    (async () => {
-      const reviewsWithUsers = await getReviewsWithUsers(movieId);
-      setReviews(reviewsWithUsers);
-    })();
-  }, [movieId]);
 
   if (!movie) {
     return (
@@ -150,17 +141,20 @@ function MovieDetail() {
                   {i18n.moviePage.cast}
                 </h3>
               </div>
-              <section className="pt-6 mt-6">
-                <h4 className="text-gray-500 dark:text-gray-300 text-sm font-semibold">Your review</h4>
-                {myReview ? (
-                  <ReviewComponent review={myReview} readonly bgColor="#e4f7ff"/>
-                ) : (
-                  <AddEditReviewForm movieId={movieId} onSubmit={addMyReview} />
-                )}
-              </section>
+              {user.isLoggedIn && (
+                <section className="pt-6 mt-6">
+                  <h4 className="text-gray-500 dark:text-gray-300 text-sm font-semibold">Your review</h4>
+                  {myReview && user.isLoggedIn ? (
+                    <ReviewComponent review={myReview} readonly bgColor="#e4f7ff" />
+                  ) : (
+                    <AddEditReviewForm movieId={movieId} onSubmit={addMyReview} />
+                  )}
+                </section>
+              )}
               <section className="py-4">
                 <h2 className="dark:text-gray-300 font-semibold text-lg pb-2">{i18n.moviePage.reviews}</h2>
-                {reviews.map((review) => <ReviewComponent readonly={true} key={review.id} review={review} />)}
+                {otherReviews
+                  .map((review) => <ReviewComponent readonly={true} key={review.id} review={review} />)}
               </section>
             </div>
           </div>

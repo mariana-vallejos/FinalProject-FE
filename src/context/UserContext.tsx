@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { dbPromise } from "../db/db";
 import type { User } from "../domain/User";
-import { mockGuest as defaultGuest, mockUser } from "../Mocks/user.mock";
+import { mockGuest as defaultGuest } from "../Mocks/user.mock";
 
 interface UserContextType {
   user: User;
@@ -26,7 +26,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         const savedUser = await db.get("users", session);
         setUser(savedUser ?? defaultGuest);
       } else {
-        await db.put("users", mockUser);
+        setUser(defaultGuest);
       }
       setLoading(false);
     })();
