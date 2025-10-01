@@ -4,7 +4,6 @@ import { useMovies } from "../../context/MoviesContext";
 import { useMemo, useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import Dropdown from "../../components/Dropdown";
-import AddEditReviewForm from "../../components/review/AddEditReviewForm";
 import type { Movie } from "../../domain/Movie";
 
 function Home() {
@@ -45,7 +44,6 @@ function Home() {
   return (
     <>
       <Navbar />
-      <AddEditReviewForm movieId={1} onCancel={() => {}} onSubmit={() => console.log('review')} isEditing={true}/>
       <main className="min-h-screen bg-primary-bg dark:bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">

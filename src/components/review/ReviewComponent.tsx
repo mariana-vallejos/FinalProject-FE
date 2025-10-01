@@ -3,15 +3,17 @@ import type { ReviewWithUser } from "../../domain/Review";
 import { lazy, useState } from "react";
 import ReviewTags from "./ReviewTags";
 import Stars from "../Stars";
+import { formatDate } from "../../utils/formatDate";
 
 const DeleteReviewModal = lazy(() => import('../ConfirmModal'))
 
 type ReviewComponentProps = {
   review: ReviewWithUser;
   readonly: boolean;
+  bgColor?: string;
 };
 
-const ReviewComponent = ({ review, readonly }: ReviewComponentProps) => {
+const ReviewComponent = ({ review, readonly, bgColor = '#fff' }: ReviewComponentProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleDelete = () => {
@@ -25,7 +27,7 @@ const ReviewComponent = ({ review, readonly }: ReviewComponentProps) => {
   }
 
   return (
-    <article key={review.id} className="py-3 px-5 relative">
+    <article key={review.id} className={`py-3 px-5 relative bg-[${bgColor}] dark:bg-gray-600`}>
       {!readonly && (
         <div className="absolute top-0 right-0 flex md:gap-2 p-2 xl:opacity-0 xl:hover:opacity-100 transition-opacity ">
           <button
@@ -55,7 +57,7 @@ const ReviewComponent = ({ review, readonly }: ReviewComponentProps) => {
         />
         <div>
           <h5 className="font-semibold text-[16px]">{review.user?.name}</h5>
-          <p className="text-sm font-medium text-gray-400">{review.createdAt}</p>
+          <p className="text-sm font-medium text-gray-400">{formatDate(review.createdAt)}</p>
         </div>
       </div>
       <Stars rating={review.rating} editable={false} />

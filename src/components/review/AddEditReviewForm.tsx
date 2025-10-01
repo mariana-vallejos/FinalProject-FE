@@ -22,7 +22,7 @@ const AddEditReviewForm = ({
 }: AddEditReviewFormProps) => {
   const { user } = useUser();
   return (
-    <article className="py-3 px-5 relative">
+    <article className="py-3 px-5 relative bg-[#e4f7ff] dark:bg-gray-500 rounded-xl">
       <div className="flex gap-3 pb-1 items-center">
         <img
           src={user.avatar || "https://i.pravatar.cc/150?img=1"}

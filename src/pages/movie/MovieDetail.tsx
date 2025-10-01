@@ -4,14 +4,27 @@ import { useMovies } from "../../context/MoviesContext";
 import { FaArrowLeft } from "react-icons/fa";
 import RatingBadge from "../../components/RatingBadge";
 import { i18n } from "../../i18n";
+import { useEffect, useState } from "react";
+import { getReviewsWithUsers } from "../../utils/getReviewsWithUsers";
+import type { ReviewWithUser } from "../../domain/Review";
+import ReviewComponent from "../../components/review/ReviewComponent";
+import AddEditReviewForm from "../../components/review/AddEditReviewForm";
 
 function MovieDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const movieId = Number(id);
   const { state } = useMovies();
+  const [reviews, setReviews] = useState<ReviewWithUser[]>([]);
 
   const movie = state.movies.find((m) => m.id === movieId);
+
+  useEffect(() => {
+    (async () => {
+      const reviewsWithUsers = await getReviewsWithUsers(movieId);
+      setReviews(reviewsWithUsers);
+    })();
+  }, [movieId]);
 
   if (!movie) {
     return (
@@ -103,6 +116,14 @@ function MovieDetail() {
                   {i18n.moviePage.cast}
                 </h3>
               </div>
+              <section className="pt-6 mt-6">
+                <h4 className="text-gray-500 dark:text-gray-300 text-sm font-semibold">Your review</h4>
+                <AddEditReviewForm movieId={movieId} onSubmit={() => console.log('review')} onCancel={() => {}} />
+              </section>
+              <section className="py-4">
+                <h2 className="dark:text-gray-300 font-semibold text-lg pb-2">{i18n.moviePage.reviews}</h2>
+                {reviews.map((review) => <ReviewComponent readonly={true} key={review.id} review={review} />)}
+              </section>
             </div>
           </div>
         </div>

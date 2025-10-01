@@ -21,5 +21,6 @@ export const i18n = {
     director: "Director",
     studio: "Studio",
     cast: "Cast",
+    reviews: "Reviews"
   },
 };
