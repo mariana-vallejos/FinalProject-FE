@@ -5,12 +5,12 @@ import Navbar from "../../components/Navbar";
 import type { Movie } from "../../domain/Movie";
 import { useMovies } from "../../context/MoviesContext";
 import LoadingModal from "../../components/LoadingModalFallback";
-import MovieFormWizard from "../../components/MovieWizardModal/MovieFormWizard";
 import { makeEmptyMovieDraft } from "../../components/AddEditMovieModal/movieFormHelpers";
 
-const AddEditMovieModal = lazy(
-  () => import("../../components/AddEditMovieModal/AddEditMovieModal")
+const MovieFormWizard = lazy(() =>
+  import("../../components/MovieWizardModal/MovieFormWizard")
 );
+
 const ConfirmModal = lazy(() => import("../../components/ConfirmModal"));
 const Toast = lazy(() => import("../../components/Toast"));
 
