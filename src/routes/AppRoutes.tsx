@@ -5,6 +5,7 @@ import Home from "../pages/guest/Home";
 import MovieDetail from "../pages/movie/MovieDetail";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import ReviewsPage from "../pages/admin/ReviewsPage";
+import ProfilePage from "../pages/profile/ProfilePage";
 
 function AppRoutes() {
   return (
@@ -32,7 +33,15 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
+        
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute roles={["admin", "user"]}>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </>
   );

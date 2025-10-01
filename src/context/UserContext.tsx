@@ -1,12 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { dbPromise } from "../db/db";
 import type { User } from "../domain/User";
-import { mockGuest as defaultGuest, mockAdmin, mockUser } from "../Mocks/user.mock";
+import { mockGuest as defaultGuest, mockUser } from "../Mocks/user.mock";
 
 interface UserContextType {
   user: User;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  addToWatchlist: (movieId: number) => "added" | "exists";
+  addToWatched: (movieId: number) => "added" | "exists";
   loading: boolean;
 }
 
@@ -54,8 +56,34 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     setUser(defaultGuest);
   };
 
+  const addToWatchlist = (movieId: number): "added" | "exists" => {
+    if (user.watchlist?.includes(movieId)) {
+      return "exists";
+    }
+    const updatedUser = {
+      ...user,
+      watchlist: [...(user.watchlist ?? []), movieId],
+    };
+    setUser(updatedUser);
+    return "added";
+  };
+
+  const addToWatched = (movieId: number): "added" | "exists" => {
+    if (user.watched?.includes(movieId)) {
+      return "exists";
+    }
+    const updatedUser = {
+      ...user,
+      watched: [...(user.watched ?? []), movieId],
+    };
+    setUser(updatedUser);
+    return "added";
+  };
+
   return (
-    <UserContext.Provider value={{ user, login, logout, loading }}>
+    <UserContext.Provider
+      value={{ user, login, logout, addToWatchlist, addToWatched, loading }}
+    >
       {children}
     </UserContext.Provider>
   );

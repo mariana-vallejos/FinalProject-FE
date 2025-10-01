@@ -11,6 +11,13 @@ export const i18n = {
   toast: {
     showToast: "Mostrar Toast",
   },
+  profile: {
+    edit: "Edit Profile",
+    reviews: "Reviews",
+    watchlist: "Watch List",
+    watched: "Watched",
+    noContent: "No content available.",
+  },
   moviePage: {
     movieNotFound: "Movie not found",
     back: "back",
@@ -21,5 +28,9 @@ export const i18n = {
     director: "Director",
     studio: "Studio",
     cast: "Cast",
+    addedToWatched: "Added to Watched",
+    addedToWatchlist: "Added to Watchlist",
+    alredyInWatched: "Movie already in Watched",
+    alredyInWatchlist: "Movie already in Watchlist",
   },
 };
