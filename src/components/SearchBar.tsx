@@ -38,7 +38,7 @@ export default function SearchBar({
   return (
     <div className={["relative", className].join(" ")}>
       <input
-        type="search"
+        type="input"
         value={query}
         onChange={handleChange}
         placeholder={placeHolder}
