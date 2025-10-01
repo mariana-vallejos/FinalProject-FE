@@ -16,6 +16,8 @@ export const mockAdmin: User = {
   role: "admin",
   avatar: "https://i.pravatar.cc/40?img=12",
   isLoggedIn: true,
+  watchlist: [],
+  watched: [],
 };
 
 export const mockUser: User = {
@@ -25,4 +27,6 @@ export const mockUser: User = {
   role: "user",
   avatar: "https://i.pravatar.cc/40?img=5",
   isLoggedIn: true,
+  watchlist: [],
+  watched: [],
 };

@@ -37,7 +37,7 @@ export default function MovieCard({ movie, className = "" }: MovieCardProps) {
         </div>
 
         <div className="p-3 pb-4">
-          <h3 className="line-clamp-2 font-semibold text-neutral-900 dark:text-neutral-100">
+          <h3 className="truncate line-clamp-2 font-semibold text-neutral-900 dark:text-neutral-100">
             {safeTitle}
           </h3>
           <p className="mt-0.5 text-sm text-neutral-500 dark:text-neutral-400">

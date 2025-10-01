@@ -7,6 +7,8 @@ export type User = {
   role: Role;
   avatar?: string;
   isLoggedIn: boolean;
+  watchlist?: number[];
+  watched?: number[];
 };
 
 export const UserRole = {

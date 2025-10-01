@@ -1,12 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { dbPromise } from "../db/db";
 import type { User } from "../domain/User";
-import { mockGuest as defaultGuest, mockAdmin, mockUser } from "../Mocks/user.mock";
+import { mockGuest as defaultGuest, mockUser } from "../Mocks/user.mock";
 
 interface UserContextType {
   user: User;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  addToWatchlist: (movieId: number) => Promise<"added" | "exists">;
+  addToWatched: (movieId: number) => Promise<"added" | "exists">;
   loading: boolean;
 }
 
@@ -54,8 +56,56 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     setUser(defaultGuest);
   };
 
+  const addToWatchlist = async (
+    movieId: number
+  ): Promise<"added" | "exists"> => {
+    if (!user || !user.email) return "exists";
+
+    const db = await dbPromise;
+    const freshUser = await db.get("users", user.email);
+    if (!freshUser) return "exists";
+
+    if (freshUser.watchlist?.includes(movieId)) {
+      return "exists";
+    }
+
+    const updatedUser = {
+      ...freshUser,
+      watchlist: [...(freshUser.watchlist ?? []), movieId],
+    };
+
+    await db.put("users", updatedUser);
+    setUser(updatedUser);
+
+    return "added";
+  };
+
+  const addToWatched = async (movieId: number): Promise<"added" | "exists"> => {
+    if (!user || !user.email) return "exists";
+
+    const db = await dbPromise;
+    const freshUser = await db.get("users", user.email);
+    if (!freshUser) return "exists";
+
+    if (freshUser.watched?.includes(movieId)) {
+      return "exists";
+    }
+
+    const updatedUser = {
+      ...freshUser,
+      watched: [...(freshUser.watched ?? []), movieId],
+    };
+
+    await db.put("users", updatedUser);
+    setUser(updatedUser);
+
+    return "added";
+  };
+
   return (
-    <UserContext.Provider value={{ user, login, logout, loading }}>
+    <UserContext.Provider
+      value={{ user, login, logout, addToWatchlist, addToWatched, loading }}
+    >
       {children}
     </UserContext.Provider>
   );

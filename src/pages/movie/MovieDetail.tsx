@@ -4,6 +4,8 @@ import { useMovies } from "../../context/MoviesContext";
 import { FaArrowLeft } from "react-icons/fa";
 import RatingBadge from "../../components/RatingBadge";
 import { i18n } from "../../i18n";
+import { useUser } from "../../context/UserContext";
+import Toast from "../../components/Toast";
 import { useEffect, useState } from "react";
 import { getReviewsWithUsers } from "../../utils/getReviewsWithUsers";
 import type { ReviewWithUser } from "../../domain/Review";
@@ -16,7 +18,11 @@ function MovieDetail() {
   const navigate = useNavigate();
   const movieId = Number(id);
   const { state } = useMovies();
-  const [reviews, setReviews] = useState<ReviewWithUser[]>([]);
+  const { user, addToWatchlist, addToWatched } = useUser();
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);  const [reviews, setReviews] = useState<ReviewWithUser[]>([]);
   const { myReview, otherReviews, addMyReview } = useMovieReviews(movieId);
 
   const movie = state.movies.find((m) => m.id === movieId);
@@ -45,7 +51,7 @@ function MovieDetail() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           <button
             onClick={() => navigate(-1)}
-            className="flex mb-6 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white items-center justify-center"
+            className="flex mb-6 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white items-center justify-center cursor-pointer"
           >
             <FaArrowLeft className="text-primary mr-2" />
             {i18n.moviePage.back}
@@ -58,14 +64,40 @@ function MovieDetail() {
                 className="w-full rounded-lg shadow-md"
               />
 
-              <div className="flex gap-3 mt-6">
-                <button className="flex-1 text-white bg-secundary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition">
-                  {i18n.moviePage.watched}
-                </button>
-                <button className="flex-1 text-white bg-primary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition">
-                  {i18n.moviePage.watchlist}
-                </button>
-              </div>
+              {user.isLoggedIn && (
+                <div className="flex gap-3 mt-6">
+                  <button
+                    onClick={async () => {
+                      const result = addToWatched(movieId);
+                      setToast({
+                        message:
+                          (await result) === "added"
+                            ? i18n.moviePage.addedToWatched
+                            : i18n.moviePage.alredyInWatched,
+                        type: (await result) === "added" ? "success" : "error",
+                      });
+                    }}
+                    className="flex-1 text-white bg-secundary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition"
+                  >
+                    {i18n.moviePage.watched}
+                  </button>
+                  <button
+                    onClick={async () => {
+                      const result = addToWatchlist(movieId);
+                      setToast({
+                        message:
+                          (await result) === "added"
+                            ? i18n.moviePage.addedToWatchlist
+                            : i18n.moviePage.alredyInWatchlist,
+                        type: (await result) === "added" ? "success" : "error",
+                      });
+                    }}
+                    className="flex-1 text-white bg-primary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition"
+                  >
+                    {i18n.moviePage.watchlist}
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="md:col-span-2 space-y-4">
@@ -133,6 +165,14 @@ function MovieDetail() {
             </div>
           </div>
         </div>
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            duration={3000}
+            onClose={() => setToast(null)}
+          />
+        )}
       </main>
     </>
   );
