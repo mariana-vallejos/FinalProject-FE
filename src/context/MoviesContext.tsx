@@ -5,6 +5,7 @@ import type { Review } from "../domain/Review";
 import type { State } from "../domain/State";
 import { moviesMock } from "../Mocks/movies.mock";
 import { reviewsMock } from "../Mocks/reviews.mock";
+import { computeGenres } from "./Helpers";
 
 type Action =
   | { type: "SET_DATA"; movies: Movie[]; reviews: Review[] }
@@ -27,22 +28,28 @@ const MoviesContext = createContext<{
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case "SET_DATA":
-      return { movies: action.movies, reviews: action.reviews };
-    case "ADD_MOVIE":
-      return { ...state, movies: [...state.movies, action.movie] };
-    case "EDIT_MOVIE":
-      return {
-        ...state,
-        movies: state.movies.map((movie) =>
-          movie.id === action.movie.id ? action.movie : movie
-        ),
-      };
+    case "SET_DATA": {
+      const genres = computeGenres(action.movies);
+      return { movies: action.movies, reviews: action.reviews, genres };
+    }
+    case "ADD_MOVIE": {
+      const movies = [...state.movies, action.movie];
+      const genres = computeGenres(movies);
+      return { ...state, movies: [...state.movies, action.movie], genres };
+    }
+    case "EDIT_MOVIE": {
+      const movies = state.movies.map((m) =>
+        m.id === action.movie.id ? action.movie : m
+      );
+      const genres = computeGenres(movies);
+      return { ...state, movies, genres };
+    }
     case "DELETE_MOVIE":
-      return {
-        ...state,
-        movies: state.movies.filter((movie) => movie.id !== action.id),
-      };
+    {
+      const movies = state.movies.filter((movie) => movie.id !== action.id);
+      const genres = computeGenres(movies);
+      return {...state, movies, genres};
+    }
     case "ADD_REVIEW":
       return { ...state, reviews: [...state.reviews, action.review] };
     case "EDIT_REVIEW":
@@ -63,7 +70,7 @@ function reducer(state: State, action: Action): State {
 }
 
 export function MoviesProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, { movies: [], reviews: [] });
+  const [state, dispatch] = useReducer(reducer, { movies: [], reviews: [], genres: [] });
 
   // cargar desde indexedDB
   useEffect(() => {

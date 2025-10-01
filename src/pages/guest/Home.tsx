@@ -7,21 +7,42 @@ import { useUser } from "../../context/UserContext";
 import { useMovies } from "../../context/MoviesContext";
 import { useMemo, useState } from "react";
 import SearchBar from "../../components/SearchBar";
+import Dropdown from "../../components/Dropdown";
 
 function Home() {
   const { state } = useMovies();
   const [query, setQuery] = useState("");
+  const [genre, setGenre] = useState("");
+  const [activeFilter, setActiveFilter] = useState<"none" | "query" | "genre">("none");
 
-  function filterMovies(movies: Movie[], query: string): Movie[] {
+  function filterMoviesByQuery(movies: Movie[], query: string): Movie[] {
     const cleanedQuery = query.trim().toLowerCase();
     if (!cleanedQuery) return movies;
-    return movies.filter((movie) => movie.title.toLowerCase().includes(cleanedQuery));
+    return movies.filter((movie) =>
+      movie.title.toLowerCase().includes(cleanedQuery)
+    );
   }
 
-  const filtered = useMemo(
-    () => filterMovies(state.movies, query),
-    [state.movies, query]
-  );
+  function filterMoviesByGenre(movies: Movie[], genre: string): Movie[] {
+    const cleanedGenre = genre.trim().toLowerCase();
+    if (!cleanedGenre) return movies;
+    return movies.filter((movie) =>
+      movie.genres.some((genre) => genre.toLowerCase().includes(cleanedGenre)) );
+  }
+
+  const filtered = useMemo(() => {
+    const cleanedQuery = query.trim();
+    const cleanedGenre = genre.trim();
+    if(activeFilter === "genre") {
+      return filterMoviesByGenre(state.movies, cleanedGenre);
+    }
+    else if(activeFilter === "query") {
+      return filterMoviesByQuery(state.movies, cleanedQuery);
+    }
+    else {
+      return state.movies;
+    }
+  }, [state.movies, query, genre, activeFilter]);
 
   return (
     <>
@@ -32,11 +53,17 @@ function Home() {
             Movies
           </h1>
 
-          <div className="mt-3 sm:mt-4 max-w-md">
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:items-center">
             <SearchBar
               value={query}
-              onChange={setQuery}
-              placeHolder="Search by title…"
+              onChange={(value) =>{ setQuery(value); setActiveFilter("query")} }
+              placeHolder="Search by title, year, cast, genre…"
+            />
+            <Dropdown
+              value={genre}
+              options={state.genres}
+              onChange={(option) => {setGenre(option); setActiveFilter("genre")}}
+              className="sm:justify-self-end sm:w-64"
             />
           </div>
 
