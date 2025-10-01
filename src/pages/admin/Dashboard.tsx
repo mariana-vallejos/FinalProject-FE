@@ -5,14 +5,14 @@ import Navbar from "../../components/Navbar";
 import type { Movie } from "../../domain/Movie";
 import { useMovies } from "../../context/MoviesContext";
 import LoadingModal from "../../components/LoadingModalFallback";
-import MovieFormWizard from "../../components/MovieWizardModal/MovieFormWizard";
 import { makeEmptyMovieDraft } from "../../components/AddEditMovieModal/movieFormHelpers";
 
-const AddEditMovieModal = lazy(
-  () => import("../../components/AddEditMovieModal/AddEditMovieModal")
+const MovieFormWizard = lazy(() =>
+  import("../../components/MovieWizardModal/MovieFormWizard")
 );
+
 const ConfirmModal = lazy(() => import("../../components/ConfirmModal"));
-const Toast = lazy(() => import('../../components/Toast'))
+const Toast = lazy(() => import("../../components/Toast"));
 
 type WizardMode = "create" | "edit";
 
@@ -24,7 +24,7 @@ function Dashboard() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const { state, addMovie, deleteMovie, editMovie } = useMovies();
   const [showToast, setShowToast] = useState(false);
-  const [messageToast, setMessageToast] = useState('')
+  const [messageToast, setMessageToast] = useState("");
 
   const handleOpenConfirm = (id: number) => {
     setSelectedId(id);
@@ -42,8 +42,8 @@ function Dashboard() {
     }
     setIsDeleteModalOpen(false);
     setSelectedId(null);
-    setMessageToast('Movie deleted successfully')
-    setShowToast(true)
+    setMessageToast("Movie deleted successfully");
+    setShowToast(true);
   };
 
   return (
@@ -120,25 +120,30 @@ function Dashboard() {
         </div>
       </div>
 
-
-    {isWizardOpen && (
-      <Suspense fallback={<LoadingModal label="Opening Edit Modie Modal..."/>}>
-        <MovieFormWizard
-          open={isWizardOpen}
-          initial={wizardMode === "edit" ? state.movies.find((movie) => movie.id === selectedId) : makeEmptyMovieDraft()}
-          editable={wizardMode === "edit"}
-          onClose={closeWizard}
-          onEdit={async (input) => {
-            await editMovie(input);
-            closeWizard();
-          }}
-          onSubmit={async (draft) => {
-            await addMovie(draft as Movie);
-            closeWizard();
-          }}
-        />
-      </Suspense>
-    )}
+      {isWizardOpen && (
+        <Suspense
+          fallback={<LoadingModal label="Opening Edit Modie Modal..." />}
+        >
+          <MovieFormWizard
+            open={isWizardOpen}
+            initial={
+              wizardMode === "edit"
+                ? state.movies.find((movie) => movie.id === selectedId)
+                : makeEmptyMovieDraft()
+            }
+            editable={wizardMode === "edit"}
+            onClose={closeWizard}
+            onEdit={async (input) => {
+              await editMovie(input);
+              closeWizard();
+            }}
+            onSubmit={async (draft) => {
+              await addMovie(draft as Movie);
+              closeWizard();
+            }}
+          />
+        </Suspense>
+      )}
     </>
   );
 }

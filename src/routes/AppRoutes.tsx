@@ -4,6 +4,7 @@ import Dashboard from "../pages/admin/Dashboard";
 import Home from "../pages/guest/Home";
 import MovieDetail from "../pages/movie/MovieDetail";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
+import ReviewsPage from "../pages/admin/ReviewsPage";
 
 function AppRoutes() {
   return (
@@ -11,7 +12,9 @@ function AppRoutes() {
       <Routes>
         <Route path={"/"} element={<Home />} />
         <Route path={"/login"} element={<LoginPage />} />
+
         <Route path={"/movies/:id"} element={<MovieDetail />} />
+
         <Route
           path="/admin"
           element={
@@ -20,6 +23,16 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/admin/reviews"
+          element={
+            <ProtectedRoute roles={["admin"]}>
+              <ReviewsPage />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
     </>
   );
