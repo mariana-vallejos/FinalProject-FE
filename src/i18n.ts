@@ -11,6 +11,13 @@ export const i18n = {
   toast: {
     showToast: "Mostrar Toast",
   },
+  profile: {
+    edit: "Edit Profile",
+    reviews: "Reviews",
+    watchlist: "Watch List",
+    watched: "Watched",
+    noContent: "No content available.",
+  },
   moviePage: {
     movieNotFound: "Movie not found",
     back: "back",

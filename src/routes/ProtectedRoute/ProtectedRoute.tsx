@@ -14,7 +14,6 @@ function ProtectedRoute({ children, roles }: ProtectedRouteProps) {
   }
 
   if (!user?.isLoggedIn) {
-    console.log(user);
     return <Navigate to="/login" replace />;
   }
 
