@@ -6,7 +6,7 @@ type StepProps = {
 
 export default function Step({stepNumber, active=true, onClick}: StepProps) {
     return (
-        <button className={`step-tag ${active ? 'step-active' : 'step-unactive'}`} onClick={onClick}>
+        <button type="button" className={`step-tag ${active ? 'step-active' : 'step-unactive'}`} onClick={onClick}>
             <p>{stepNumber}</p>
         </button>
     );
