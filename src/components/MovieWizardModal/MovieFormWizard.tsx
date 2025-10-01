@@ -98,7 +98,6 @@ export default function MovieFormWizard({
       );
       if (operationStatus) setStep(wantedStep);
     } else {
-      console.log("going back");
       setStep(wantedStep);
     }
   };
