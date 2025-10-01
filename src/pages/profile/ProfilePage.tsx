@@ -3,8 +3,12 @@ import { useUser } from "../../context/UserContext";
 import { useMovies } from "../../context/MoviesContext";
 import { i18n } from "../../i18n";
 import MovieCard from "../../components/MovieCard";
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router";
+import StatCard from "../../components/StatCard";
 
 function ProfilePage() {
+  const navigate = useNavigate();
   const { user } = useUser();
   const { state } = useMovies();
   const [activeTab, setActiveTab] = useState<
@@ -22,10 +26,26 @@ function ProfilePage() {
   const watchlistMovies = state.movies.filter((m) =>
     user.watchlist?.includes(m.id)
   );
+  const userReviews = state.reviews.filter((r) => r.userId === user.email);
+  const moviesWatchedCount = watchedMovies.length;
+
+  const avgRating =
+    userReviews.length > 0
+      ? (
+          userReviews.reduce((acc, r) => acc + r.rating, 0) / userReviews.length
+        ).toFixed(1)
+      : "—";
 
   return (
-    <div className="p-6">
-      <div className="flex items-center gap-6">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex mb-6 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white items-center justify-center cursor-pointer"
+        >
+          <FaArrowLeft className="text-primary mr-2" />
+          {i18n.moviePage.back}
+        </button>
         <img
           src={user.avatar || avatarUrl}
           alt="profile"
@@ -37,6 +57,10 @@ function ProfilePage() {
           <p className="text-gray-500">{user.email}</p>
 
           <button className="btn-primary">{i18n.profile.edit}</button>
+        </div>
+        <div className="flex gap-4">
+          <StatCard value={moviesWatchedCount} label="Movies Watched" />
+          <StatCard value={avgRating} label="Avg. Rating" />
         </div>
       </div>
 

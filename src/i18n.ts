@@ -20,7 +20,7 @@ export const i18n = {
   },
   moviePage: {
     movieNotFound: "Movie not found",
-    back: "back",
+    back: "Back",
     raiting: "Raiting",
     watched: "+ Watched",
     watchlist: "+ Watchlist",
