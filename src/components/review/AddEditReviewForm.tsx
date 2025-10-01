@@ -36,7 +36,7 @@ const AddEditReviewForm = ({
 
       <Formik
         initialValues={{
-          text: initialReview?.text ?? "",
+          text: initialReview?.text?.trim() ?? "",
           rating: initialReview?.rating ?? 0,
           tags: initialReview?.tags ?? [],
           newTag: "",
@@ -47,10 +47,9 @@ const AddEditReviewForm = ({
             userId: user.email,
             movieId,
             rating: values.rating,
-            text: values.text,
+            text: values.text.trim(),
             tags: values.tags,
           });
-          console.log(values)
           resetForm();
         }}
       >

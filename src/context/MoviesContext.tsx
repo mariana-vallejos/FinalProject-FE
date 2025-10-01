@@ -6,6 +6,7 @@ import type { State } from "../domain/State";
 import { moviesMock } from "../Mocks/movies.mock";
 import { reviewsMock } from "../Mocks/reviews.mock";
 import { computeGenres } from "./Helpers";
+import { useUser } from "./UserContext";
 
 type Action =
   | { type: "SET_DATA"; movies: Movie[]; reviews: Review[] }
@@ -71,6 +72,7 @@ function reducer(state: State, action: Action): State {
 
 export function MoviesProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, { movies: [], reviews: [], genres: [] });
+  const { addToWatched } = useUser()
 
   // cargar desde indexedDB
   useEffect(() => {
@@ -182,6 +184,7 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
       createdAt: rightNowDate
     }
     dispatch({ type: "ADD_REVIEW", review: newReview });
+    addToWatched(newReview.movieId)
   };
 
   const editReview = async (review: Review) => {
