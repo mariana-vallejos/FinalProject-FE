@@ -45,11 +45,11 @@ function reducer(state: State, action: Action): State {
       return { ...state, movies, genres };
     }
     case "DELETE_MOVIE":
-    {
-      const movies = state.movies.filter((movie) => movie.id !== action.id);
-      const genres = computeGenres(movies);
-      return {...state, movies, genres};
-    }
+      {
+        const movies = state.movies.filter((movie) => movie.id !== action.id);
+        const genres = computeGenres(movies);
+        return { ...state, movies, genres };
+      }
     case "ADD_REVIEW":
       return { ...state, reviews: [...state.reviews, action.review] };
     case "EDIT_REVIEW":
@@ -76,27 +76,22 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     (async () => {
       const db = await dbPromise;
-      const movieRows = await db.getAll("movies");
       const reviewRows = await db.getAll("reviews");
-      
-      if(movieRows.length === 0) {
-        const alreadySeeded = localStorage.getItem("movies.seeded") === "1";
-        if(!alreadySeeded) {
-          const tx = db.transaction("movies", "readwrite");
-          const store = tx.objectStore("movies");
-
-          await Promise.all(
-            moviesMock.map(async (movie) => {
-              const { id: _ignore, ...insertable } = movie;
-              await store.add({
-                ...insertable,
-                createdAt: insertable.createdAt ?? new Date().toISOString(),
-              });
-            }) 
-          );
-          await tx.done;
-          localStorage.setItem("movies.seeded", "1");
-        }
+      const alreadySeeded = localStorage.getItem("movies.seeded") === "1";
+      if (!alreadySeeded) {
+        const tx = db.transaction("movies", "readwrite");
+        const store = tx.objectStore("movies");
+        localStorage.setItem("movies.seeded", "1");
+        await Promise.all(
+          moviesMock.map(async (movie) => {
+            const { id: _ignore, ...insertable } = movie;
+            await store.add({
+              ...insertable,
+              createdAt: insertable.createdAt ?? new Date().toISOString(),
+            });
+          })
+        );
+        await tx.done;
       }
 
       if (reviewRows.length === 0) {
@@ -122,8 +117,8 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
       const freshMovies = await db.getAll("movies");
       const freshReviews = await db.getAll("reviews");
 
-      const movies: Movie[] = freshMovies.map((movie) => ( {id: movie.id!, ...movie} ));
-      const reviews: Review[] = freshReviews.map((review) => ( {id: review.id!, ...review} ));
+      const movies: Movie[] = freshMovies.map((movie) => ({ id: movie.id!, ...movie }));
+      const reviews: Review[] = freshReviews.map((review) => ({ id: review.id!, ...review }));
       dispatch({ type: "SET_DATA", movies, reviews });
     })();
   }, []);
