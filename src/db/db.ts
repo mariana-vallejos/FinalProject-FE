@@ -28,6 +28,8 @@ export const dbPromise = openDB<CineLogDB>("CineLogDB", 1, {
       password: mockAdmin.password,
       role: mockAdmin.role,
       isLoggedIn: false,
+      watchlist: [],
+      watched: [],
     });
     users.put({
       email: mockUser.email,
@@ -35,6 +37,8 @@ export const dbPromise = openDB<CineLogDB>("CineLogDB", 1, {
       password: mockUser.password,
       role: mockUser.role,
       isLoggedIn: false,
+      watchlist: [],
+      watched: [],
     });
   },
 });
