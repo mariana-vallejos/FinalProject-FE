@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Movie } from "../../domain/Movie";
 import AddEditMovieModal from "../AddEditMovieModal/AddEditMovieModal";
 import BreadCrumbSteps from "../BreadCrumbsSteps";
@@ -40,6 +40,17 @@ export default function MovieFormWizard({
   initial,
 }: MovieFormWizardProps) {
   const [step, setStep] = useState<number>(0);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
 
   if (!open) return null;
   const initialValues = useMemo(
