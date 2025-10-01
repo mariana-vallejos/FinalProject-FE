@@ -1,21 +1,24 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useUser } from "../../context/UserContext";
 import type { Review } from "../../domain/Review";
-import StarsRating from "../StarsRating";
 import { ReviewSchema } from "../../validators/ReviewSchema";
 import ReviewTags from "./ReviewTags";
+import Stars from "../Stars";
 
 type AddEditReviewFormProps = {
   movieId: number;
   initialReview?: Review;
-  //   onSubmit: (review: Omit<ReviewWithUser, "id" | "createdAt">) => void;
+  onSubmit: (review: Omit<Review, "id" | "createdAt">) => void;
   onCancel?: () => void;
+  isEditing?: boolean
 };
 
 const AddEditReviewForm = ({
   movieId,
   initialReview,
   onCancel,
+  onSubmit,
+  isEditing = false
 }: AddEditReviewFormProps) => {
   const { user } = useUser();
   return (
@@ -40,24 +43,24 @@ const AddEditReviewForm = ({
         }}
         validationSchema={ReviewSchema}
         onSubmit={(values, { resetForm }) => {
-          // onSubmit({
-          //   userId: user.name,
-          //   movieId,
-          //   rating: values.rating,
-          //   text: values.text,
-          //   tags: values.tags,
-          // });
-
+          onSubmit({
+            userId: user.email,
+            movieId,
+            rating: values.rating,
+            text: values.text,
+            tags: values.tags,
+          });
+          console.log(values)
           resetForm();
         }}
       >
         {({ values, setFieldValue }) => (
           <Form>
             <div>
-              <StarsRating
+              <Stars
                 rating={values.rating}
-                readOnly={false}
-                setRating={(val) => setFieldValue("rating", val)}
+                editable={true}
+                onChange={(val) => setFieldValue("rating", val)}
               />
               <ErrorMessage
                 name="rating"
@@ -107,7 +110,7 @@ const AddEditReviewForm = ({
               </button>
             </div>
 
-            <ReviewTags tags={values.tags}/>
+            <ReviewTags tags={values.tags} />
 
             <div className="flex justify-end gap-2">
               {onCancel && (
@@ -120,7 +123,7 @@ const AddEditReviewForm = ({
                 </button>
               )}
               <button type="submit" className="btn-primary">
-                {/* {isEditing ? "Save changes" : "Post review"} */}
+                {isEditing ? "Save changes" : "Post review"}
               </button>
             </div>
           </Form>

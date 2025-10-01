@@ -10,7 +10,7 @@ function Home() {
   return (
     <>
       <Navbar />
-      <AddEditReviewForm movieId={1} onCancel={() => {}}/>
+      <AddEditReviewForm movieId={1} onCancel={() => {}} onSubmit={() => console.log('review')} isEditing={true}/>
       <main className="min-h-screen bg-primary-bg dark:bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="mb-6 text-2xl font-bold text-gray-800 dark:text-gray-100">
