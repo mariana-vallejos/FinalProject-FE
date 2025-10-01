@@ -1,88 +1,77 @@
-import { Field, ErrorMessage } from "formik";
-import { useEffect, useState } from "react";
-
-export type ListInputFieldProps = {
-  field: string;
-  error: boolean;
-  touched: boolean;
-  placeholder: string;
-  label?: string;
-};
+import { Field, ErrorMessage, getIn } from "formik";
+import { useEffect, useRef, useState } from "react";
 
 export default function ListInputField({
   field,
-  error,
-  touched,
   placeholder,
   label,
-}: ListInputFieldProps) {
-  const hasValidationError = Boolean(error && touched);
-  const labelText =
-    label ?? field.charAt(0).toUpperCase() + field.slice(1);
-
+}: {
+  field: string;
+  placeholder: string;
+  label?: string;
+}) {
   return (
     <div className="relative">
-      <label className="form-label">{labelText}</label>
+      <label className="form-label">{label ?? field[0].toUpperCase()+field.slice(1)}</label>
 
       <Field name={field}>
         {({ field: formikField, form }: any) => {
-          const [rawListInputText, setRawListInputText] = useState<string>(() => {
-            const currentArrayValue = Array.isArray(formikField.value)
-              ? (formikField.value as string[])
-              : [];
-            return currentArrayValue.join(", ");
+          const [raw, setRaw] = useState<string>(() => {
+            return formikField.value.join(", ");
           });
 
+          const skipSyncRef = useRef(false);
+
           useEffect(() => {
-            const currentArrayValue = Array.isArray(formikField.value)
-              ? (formikField.value as string[])
-              : [];
-            const joinedText = currentArrayValue.join(", ");
-            setRawListInputText(joinedText);
+            if (skipSyncRef.current) { skipSyncRef.current = false; return; }
+            const joined = formikField.value.join(", ");
+            if (!/,\s*$/.test(raw)) setRaw(joined);
           }, [formikField.value]);
 
-          const handleListInputChange = (
-            event: React.ChangeEvent<HTMLInputElement>
-          ) => {
-            const nextRawText = event.target.value;
-            setRawListInputText(nextRawText);
+          const parser = (text: string) => text.split(",").map(t => t.trim()).filter(Boolean);
+
+          const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const nextText = e.target.value;
+            setRaw(nextText);
+            const tokens = parser(nextText);
+            skipSyncRef.current = true;
+            form.setFieldValue(formikField.name, tokens, true);
+            form.setFieldTouched(formikField.name, true, false);
+
+            if (tokens.length > 0) form.setFieldError(formikField.name, undefined);
           };
 
-          const commitRawTextToFormikArray = () => {
-            const parsedTokens = rawListInputText
-              .split(",")
-              .map((token) => token.trim())
-              .filter((token) => token.length > 0);
-            form.setFieldValue(formikField.name, parsedTokens);
-            form.setFieldTouched(formikField.name, true);
+          const commit = () => {
+            const tokens = parser(raw);
+            skipSyncRef.current = true;
+            form.setFieldValue(formikField.name, tokens, true);
+            form.setFieldTouched(formikField.name, true, true);
           };
 
-          const handleListInputKeyDown = (
-            event: React.KeyboardEvent<HTMLInputElement>
-          ) => {
-            if (event.key === "Enter") {
-              event.preventDefault();
-              commitRawTextToFormikArray();
-            }
+          const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === "Enter") { e.preventDefault(); commit(); }
           };
+
+          const fieldError = getIn(form.errors, formikField.name);
+          const fieldTouched = getIn(form.touched, formikField.name);
+          const showError = Boolean(fieldError && fieldTouched);
 
           return (
-            <input
-              name={formikField.name}
-              value={rawListInputText}
-              placeholder={placeholder}
-              onChange={handleListInputChange}
-              onBlur={commitRawTextToFormikArray}
-              onKeyDown={handleListInputKeyDown}
-              className={`input-base ${
-                hasValidationError ? "input-error" : "input-normal"
-              }`}
-            />
+            <>
+              <input
+                name={formikField.name}
+                value={raw}
+                placeholder={placeholder}
+                onChange={handleChange}
+                onBlur={commit}
+                onKeyDown={handleKeyDown}
+                className={`input-base ${showError ? "input-error" : "input-normal"}`}
+              />
+              <ErrorMessage name={field} component="p" className="error-message" />
+            </>
           );
         }}
       </Field>
-
-      <ErrorMessage name={field} component="p" className="error-message" />
     </div>
   );
 }

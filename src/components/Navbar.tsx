@@ -54,7 +54,7 @@ function Navbar() {
     <nav className="bg-primary-bg px-6 py-3 border-b border-gray-300">
       <div className="flex justify-between items-center">
         <div className="text-xl font-title flex items-center">
-          <MdLocalMovies /> {i18n.cinelog}
+          <MdLocalMovies className="text-primary" /> {i18n.cinelog}
         </div>
 
         <div className="hidden md:flex items-center gap-6">{menuItems()}</div>
