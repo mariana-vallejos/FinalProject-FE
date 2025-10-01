@@ -4,6 +4,7 @@ import Dashboard from "../pages/admin/Dashboard";
 import Home from "../pages/guest/Home";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import ReviewsPage from "../pages/admin/ReviewsPage";
+import ProfilePage from "../pages/profile/ProfilePage";
 
 function AppRoutes() {
   return (
@@ -24,6 +25,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute roles={["admin"]}>
               <ReviewsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute roles={["admin", "user"]}>
+              <ProfilePage />
             </ProtectedRoute>
           }
         />
