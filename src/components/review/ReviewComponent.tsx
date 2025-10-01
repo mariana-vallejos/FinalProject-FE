@@ -1,9 +1,10 @@
 import { MdDelete, MdEdit } from "react-icons/md";
-import type { ReviewWithUser } from "../domain/Review";
-import StarsRating from "./StarsRating";
+import type { ReviewWithUser } from "../../domain/Review";
+import StarsRating from "../StarsRating";
 import { lazy, useState } from "react";
+import ReviewTags from "./ReviewTags";
 
-const DeleteReviewModal = lazy(() => import('../components/ConfirmModal'))
+const DeleteReviewModal = lazy(() => import('../ConfirmModal'))
 
 type ReviewComponentProps = {
   review: ReviewWithUser;
@@ -59,16 +60,9 @@ const ReviewComponent = ({ review, readonly }: ReviewComponentProps) => {
       </div>
       <StarsRating rating={review.rating} readOnly={true} />
       <p className="py-3 font-light text-sm dark:text-gray-300">{review.text}</p>
-      <div className="flex flex-wrap gap-1.5">
-        {review.tags?.map((tag, index) => (
-          <span
-            key={index}
-            className="rounded-2xl border border-primary text-primary font-light py-2 px-3 text-sm"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
+      {
+        review.tags && <ReviewTags tags={review.tags}/>
+      }
     </article>
   );
 };
