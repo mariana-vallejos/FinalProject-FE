@@ -5,10 +5,11 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { useUser } from "../context/UserContext";
 import { i18n } from "../i18n";
 import { UserRole } from "../domain/User";
+import ProfileSection from "./ProfileSection";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { user, logout } = useUser();
+  const { user } = useUser();
   const isLoggedIn = user.isLoggedIn;
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -67,22 +68,7 @@ function Navbar() {
               {i18n.navbar.signin}
             </button>
           ) : (
-            <div className="flex items-center gap-2">
-              <span className="font-semibold">{user.name}</span>
-              {user.avatar && (
-                <img
-                  src={user.avatar}
-                  alt="profile"
-                  className="w-9 h-9 rounded-full border border-gray-200"
-                />
-              )}
-              <button
-                onClick={logout}
-                className="ml-3 text-sm text-red-500 hover:underline"
-              >
-                {i18n.navbar.logout}
-              </button>
-            </div>
+            <ProfileSection />
           )}
         </div>
 
@@ -104,22 +90,7 @@ function Navbar() {
               {i18n.navbar.signin}
             </button>
           ) : (
-            <div className="flex items-center gap-2">
-              <span className="font-semibold">{user.name}</span>
-              {user.avatar && (
-                <img
-                  src={user.avatar}
-                  alt="profile"
-                  className="w-9 h-9 rounded-full border border-gray-200"
-                />
-              )}
-              <button
-                onClick={logout}
-                className="ml-3 text-sm text-red-500 hover:underline"
-              >
-                {i18n.navbar.logout}
-              </button>
-            </div>
+            <ProfileSection />
           )}
           {menuItems()}
         </div>
