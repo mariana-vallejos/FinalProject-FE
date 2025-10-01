@@ -4,12 +4,14 @@ import { useMovies } from "../../context/MoviesContext";
 import { FaArrowLeft } from "react-icons/fa";
 import RatingBadge from "../../components/RatingBadge";
 import { i18n } from "../../i18n";
+import { useUser } from "../../context/UserContext";
 
 function MovieDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const movieId = Number(id);
   const { state } = useMovies();
+  const { addToWatchlist, addToWatched } = useUser();
 
   const movie = state.movies.find((m) => m.id === movieId);
 
@@ -44,10 +46,16 @@ function MovieDetail() {
               />
 
               <div className="flex gap-3 mt-6">
-                <button className="flex-1 text-white bg-secundary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition">
+                <button
+                  onClick={() => addToWatched(movieId)}
+                  className="flex-1 text-white bg-secundary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition"
+                >
                   {i18n.moviePage.watched}
                 </button>
-                <button className="flex-1 text-white bg-primary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition">
+                <button
+                  onClick={() => addToWatchlist(movieId)}
+                  className="flex-1 text-white bg-primary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition"
+                >
                   {i18n.moviePage.watchlist}
                 </button>
               </div>
