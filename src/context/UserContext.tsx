@@ -7,8 +7,8 @@ interface UserContextType {
   user: User;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  addToWatchlist: (movieId: number) => "added" | "exists";
-  addToWatched: (movieId: number) => "added" | "exists";
+  addToWatchlist: (movieId: number) => Promise<"added" | "exists">;
+  addToWatched: (movieId: number) => Promise<"added" | "exists">;
   loading: boolean;
 }
 
@@ -56,27 +56,49 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     setUser(defaultGuest);
   };
 
-  const addToWatchlist = (movieId: number): "added" | "exists" => {
-    if (user.watchlist?.includes(movieId)) {
+  const addToWatchlist = async (
+    movieId: number
+  ): Promise<"added" | "exists"> => {
+    if (!user || !user.email) return "exists";
+
+    const db = await dbPromise;
+    const freshUser = await db.get("users", user.email);
+    if (!freshUser) return "exists";
+
+    if (freshUser.watchlist?.includes(movieId)) {
       return "exists";
     }
+
     const updatedUser = {
-      ...user,
-      watchlist: [...(user.watchlist ?? []), movieId],
+      ...freshUser,
+      watchlist: [...(freshUser.watchlist ?? []), movieId],
     };
+
+    await db.put("users", updatedUser);
     setUser(updatedUser);
+
     return "added";
   };
 
-  const addToWatched = (movieId: number): "added" | "exists" => {
-    if (user.watched?.includes(movieId)) {
+  const addToWatched = async (movieId: number): Promise<"added" | "exists"> => {
+    if (!user || !user.email) return "exists";
+
+    const db = await dbPromise;
+    const freshUser = await db.get("users", user.email);
+    if (!freshUser) return "exists";
+
+    if (freshUser.watched?.includes(movieId)) {
       return "exists";
     }
+
     const updatedUser = {
-      ...user,
-      watched: [...(user.watched ?? []), movieId],
+      ...freshUser,
+      watched: [...(freshUser.watched ?? []), movieId],
     };
+
+    await db.put("users", updatedUser);
     setUser(updatedUser);
+
     return "added";
   };
 
