@@ -38,33 +38,36 @@ function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex mb-6 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white items-center justify-center cursor-pointer"
-        >
-          <FaArrowLeft className="text-primary mr-2" />
-          {i18n.moviePage.back}
-        </button>
-        <img
-          src={user.avatar || avatarUrl}
-          alt="profile"
-          className="w-24 h-24 rounded-full border border-gray-300"
-        />
+      <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-6 md:gap-0">
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex mb-6 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white items-center justify-center cursor-pointer"
+          >
+            <FaArrowLeft className="text-primary mr-2" />
+            {i18n.moviePage.back}
+          </button>
+          <img
+            src={user.avatar || avatarUrl}
+            alt="profile"
+            className="w-24 h-24 rounded-full border border-gray-300"
+          />
 
-        <div>
-          <h2 className="text-xl font-bold">{user.name}</h2>
-          <p className="text-gray-500">{user.email}</p>
+          <div>
+            <h2 className="text-xl font-bold">{user.name}</h2>
+            <p className="text-gray-500">{user.email}</p>
 
-          <button className="btn-primary">{i18n.profile.edit}</button>
+            <button className="btn-primary">{i18n.profile.edit}</button>
+          </div>
         </div>
+
         <div className="flex gap-4">
           <StatCard value={moviesWatchedCount} label="Movies Watched" />
           <StatCard value={avgRating} label="Avg. Rating" />
         </div>
       </div>
 
-      <div className="mt-8 border-b flex gap-6 text-sm">
+      <div className="mt-8 border-b flex gap-6 border-gray-300">
         <button
           className={`pb-2 ${
             activeTab === "reviews"
