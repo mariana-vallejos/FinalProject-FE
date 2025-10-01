@@ -21,7 +21,9 @@ function ReviewsPage() {
     })();
   }, []);
 
-  function reviewsParser(reviews: Review[]): { user: string, movie: string; rating: number; text: string }[] {
+  function reviewsParser(
+    reviews: Review[]
+  ): { user: string; movie: string; rating: number; text: string }[] {
     const filteredReviews = reviews.map((review) => {
       const movie = state.movies.find((m) => m.id === review.movieId);
       const user = users.find((u) => u.email === review.userId);
@@ -36,14 +38,17 @@ function ReviewsPage() {
     return filteredReviews;
   }
 
-  function filterReviewsByQuery(revies: Review[], query: string): { user: string, movie: string; rating: number; text: string }[] {
+  function filterReviewsByQuery(
+    revies: Review[],
+    query: string
+  ): { user: string; movie: string; rating: number; text: string }[] {
     const parsedReviews = reviewsParser(revies);
     if (query === "") return parsedReviews;
-    return parsedReviews.filter((review) =>
-      review.user.toLowerCase().includes(query.toLowerCase()) ||
-      review.movie.toLowerCase().includes(query.toLowerCase())
+    return parsedReviews.filter(
+      (review) =>
+        review.user.toLowerCase().includes(query.toLowerCase()) ||
+        review.movie.toLowerCase().includes(query.toLowerCase())
     );
-
   }
 
   const filteredReviews = useMemo(() => {
@@ -53,7 +58,6 @@ function ReviewsPage() {
 
   return (
     <div>
-      <Navbar />
       <main className="min-h-screen bg-primary-bg dark:bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
@@ -63,7 +67,9 @@ function ReviewsPage() {
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:items-center">
             <SearchBar
               value={query}
-              onChange={(value) => { setQuery(value); }}
+              onChange={(value) => {
+                setQuery(value);
+              }}
               placeHolder="Search by user or movie title..."
             />
           </div>
@@ -87,9 +93,7 @@ function ReviewsPage() {
               ]}
             />
           </div>
-
         </div>
-
       </main>
     </div>
   );

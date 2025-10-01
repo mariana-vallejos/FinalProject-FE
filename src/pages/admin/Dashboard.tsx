@@ -7,8 +7,8 @@ import { useMovies } from "../../context/MoviesContext";
 import LoadingModal from "../../components/LoadingModalFallback";
 import { makeEmptyMovieDraft } from "../../components/AddEditMovieModal/movieFormHelpers";
 
-const MovieFormWizard = lazy(() =>
-  import("../../components/MovieWizardModal/MovieFormWizard")
+const MovieFormWizard = lazy(
+  () => import("../../components/MovieWizardModal/MovieFormWizard")
 );
 
 const ConfirmModal = lazy(() => import("../../components/ConfirmModal"));
@@ -49,7 +49,6 @@ function Dashboard() {
   return (
     <>
       <div>
-        <Navbar />
         <div className="min-h-screen bg-primary-bg dark:bg-gray-700 px-6 py-10">
           <div className="md:flex items-center justify-between mb-6">
             <h2 className="font-title text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">
