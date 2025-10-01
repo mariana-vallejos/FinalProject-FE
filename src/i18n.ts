@@ -32,5 +32,6 @@ export const i18n = {
     addedToWatchlist: "Added to Watchlist",
     alredyInWatched: "Movie already in Watched",
     alredyInWatchlist: "Movie already in Watchlist",
+    noCastAvailable: "No cast information available",
   },
 };

@@ -7,6 +7,7 @@ import { i18n } from "../../i18n";
 import { useUser } from "../../context/UserContext";
 import Toast from "../../components/Toast";
 import { useState } from "react";
+import CastCard from "../../components/CastCard";
 
 function MovieDetail() {
   const { id } = useParams<{ id: string }>();
@@ -132,9 +133,22 @@ function MovieDetail() {
                 </div>
               </div>
               <div>
-                <h3 className="font-semibold dark:text-white">
+                <h3 className="font-semibold dark:text-white mb-4">
                   {i18n.moviePage.cast}
                 </h3>
+                <div>
+                  {movie.cast && movie.cast.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                      {movie.cast.map((actor, index) => (
+                        <CastCard key={index} name={actor} />
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 dark:text-gray-400 italic">
+                      {i18n.moviePage.noCastAvailable}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
