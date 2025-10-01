@@ -112,7 +112,7 @@ function ProfilePage() {
             ) : (
               <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
                 {watchlistMovies.map((movie) => (
-                  <MovieCard key={movie.id} movie={movie} />
+                  <MovieCard key={movie.id} movie={movie} optionLabels={["Delete"]} optionHandlers={[() => {console.log("DELETE THE MOVIE WITH ID ", movie.id)}]}/>
                 ))}
               </div>
             )}

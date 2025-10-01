@@ -80,6 +80,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     return "added";
   };
 
+
   const addToWatched = async (movieId: number): Promise<"added" | "exists"> => {
     if (!user || !user.email) return "exists";
 
