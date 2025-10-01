@@ -7,10 +7,8 @@ interface UserContextType {
   user: User;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  addToWatchlist: (movieId: number) => Promise<void>;
-  addToWatched: (movieId: number) => Promise<void>;
-  removeFromWatchlist: (movieId: number) => Promise<void>;
-  removeFromWatched: (movieId: number) => Promise<void>;
+  addToWatchlist: (movieId: number) => "added" | "exists";
+  addToWatched: (movieId: number) => "added" | "exists";
   loading: boolean;
 }
 
@@ -57,78 +55,34 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     await db.delete("session", "current");
     setUser(defaultGuest);
   };
-  const addToWatchlist = async (movieId: number) => {
-    if (!user || !user.email) return;
-    const db = await dbPromise;
-    const freshUser = await db.get("users", user.email);
-    if (!freshUser) return;
 
+  const addToWatchlist = (movieId: number): "added" | "exists" => {
+    if (user.watchlist?.includes(movieId)) {
+      return "exists";
+    }
     const updatedUser = {
-      ...freshUser,
-      watchlist: [...(freshUser.watchlist ?? []), movieId],
+      ...user,
+      watchlist: [...(user.watchlist ?? []), movieId],
     };
-
-    await db.put("users", updatedUser);
     setUser(updatedUser);
+    return "added";
   };
 
-  const addToWatched = async (movieId: number) => {
-    if (!user || !user.email) return;
-    const db = await dbPromise;
-    const freshUser = await db.get("users", user.email);
-    if (!freshUser) return;
-
+  const addToWatched = (movieId: number): "added" | "exists" => {
+    if (user.watched?.includes(movieId)) {
+      return "exists";
+    }
     const updatedUser = {
-      ...freshUser,
-      watched: [...(freshUser.watched ?? []), movieId],
+      ...user,
+      watched: [...(user.watched ?? []), movieId],
     };
-
-    await db.put("users", updatedUser);
     setUser(updatedUser);
-  };
-
-  const removeFromWatchlist = async (movieId: number) => {
-    if (!user || !user.email) return;
-    const db = await dbPromise;
-    const freshUser = await db.get("users", user.email);
-    if (!freshUser) return;
-
-    const updatedUser = {
-      ...freshUser,
-      watchlist: (freshUser.watchlist ?? []).filter((id) => id !== movieId),
-    };
-
-    await db.put("users", updatedUser);
-    setUser(updatedUser);
-  };
-
-  const removeFromWatched = async (movieId: number) => {
-    if (!user || !user.email) return;
-    const db = await dbPromise;
-    const freshUser = await db.get("users", user.email);
-    if (!freshUser) return;
-
-    const updatedUser = {
-      ...freshUser,
-      watched: (freshUser.watched ?? []).filter((id) => id !== movieId),
-    };
-
-    await db.put("users", updatedUser);
-    setUser(updatedUser);
+    return "added";
   };
 
   return (
     <UserContext.Provider
-      value={{
-        user,
-        login,
-        logout,
-        loading,
-        addToWatchlist,
-        addToWatched,
-        removeFromWatchlist,
-        removeFromWatched,
-      }}
+      value={{ user, login, logout, addToWatchlist, addToWatched, loading }}
     >
       {children}
     </UserContext.Provider>

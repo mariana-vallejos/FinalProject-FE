@@ -54,10 +54,13 @@ function MovieDetail() {
                 <div className="flex gap-3 mt-6">
                   <button
                     onClick={() => {
-                      addToWatched(movieId);
+                      const result = addToWatched(movieId);
                       setToast({
-                        message: i18n.moviePage.addedToWatched,
-                        type: "success",
+                        message:
+                          result === "added"
+                            ? i18n.moviePage.addedToWatched
+                            : i18n.moviePage.alredyInWatched,
+                        type: result === "added" ? "success" : "error",
                       });
                     }}
                     className="flex-1 text-white bg-secundary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition"
@@ -66,10 +69,13 @@ function MovieDetail() {
                   </button>
                   <button
                     onClick={() => {
-                      addToWatchlist(movieId);
+                      const result = addToWatchlist(movieId);
                       setToast({
-                        message: i18n.moviePage.addedToWatchlist,
-                        type: "success",
+                        message:
+                          result === "added"
+                            ? i18n.moviePage.addedToWatchlist
+                            : i18n.moviePage.alredyInWatchlist,
+                        type: result === "added" ? "success" : "error",
                       });
                     }}
                     className="flex-1 text-white bg-primary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition"

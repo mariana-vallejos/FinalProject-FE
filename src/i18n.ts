@@ -23,5 +23,7 @@ export const i18n = {
     cast: "Cast",
     addedToWatched: "Added to Watched",
     addedToWatchlist: "Added to Watchlist",
+    alredyInWatched: "Movie already in Watched",
+    alredyInWatchlist: "Movie already in Watchlist",
   },
 };
