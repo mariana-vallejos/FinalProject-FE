@@ -9,6 +9,7 @@ import { getReviewsWithUsers } from "../../utils/getReviewsWithUsers";
 import type { ReviewWithUser } from "../../domain/Review";
 import ReviewComponent from "../../components/review/ReviewComponent";
 import AddEditReviewForm from "../../components/review/AddEditReviewForm";
+import { useMovieReviews } from "./hooks/useMovieReviews";
 
 function MovieDetail() {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,7 @@ function MovieDetail() {
   const movieId = Number(id);
   const { state } = useMovies();
   const [reviews, setReviews] = useState<ReviewWithUser[]>([]);
+  const { myReview, otherReviews, addMyReview } = useMovieReviews(movieId);
 
   const movie = state.movies.find((m) => m.id === movieId);
 
@@ -118,7 +120,11 @@ function MovieDetail() {
               </div>
               <section className="pt-6 mt-6">
                 <h4 className="text-gray-500 dark:text-gray-300 text-sm font-semibold">Your review</h4>
-                <AddEditReviewForm movieId={movieId} onSubmit={() => console.log('review')} onCancel={() => {}} />
+                {myReview ? (
+                  <ReviewComponent review={myReview} readonly bgColor="#e4f7ff"/>
+                ) : (
+                  <AddEditReviewForm movieId={movieId} onSubmit={addMyReview} />
+                )}
               </section>
               <section className="py-4">
                 <h2 className="dark:text-gray-300 font-semibold text-lg pb-2">{i18n.moviePage.reviews}</h2>
