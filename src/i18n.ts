@@ -11,4 +11,15 @@ export const i18n = {
   toast: {
     showToast: "Mostrar Toast",
   },
+  moviePage: {
+    movieNotFound: "Movie not found",
+    back: "back",
+    raiting: "Raiting",
+    watched: "+ Watched",
+    watchlist: "+ Watchlist",
+    description: "Description",
+    director: "Director",
+    studio: "Studio",
+    cast: "Cast",
+  },
 };
