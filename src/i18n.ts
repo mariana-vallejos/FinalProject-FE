@@ -21,5 +21,7 @@ export const i18n = {
     director: "Director",
     studio: "Studio",
     cast: "Cast",
+    addedToWatched: "Added to Watched",
+    addedToWatchlist: "Added to Watchlist",
   },
 };
