@@ -35,7 +35,7 @@ export const reviewsMock: Review[] = [
   },
   {
     id: 5,
-    userId: "sofia@gmail.com",
+    userId: "sofia.martinez@gmail.com",
     movieId: 2,
     rating: 3,
     text: "Good, but a bit too long for me.",
