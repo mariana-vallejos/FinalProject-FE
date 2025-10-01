@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import ReviewComponent from "../../components/review/ReviewComponent";
 import AddEditReviewForm from "../../components/review/AddEditReviewForm";
 import { useMovieReviews } from "./hooks/useMovieReviews";
+import CastCard from "../../components/CastCard";
 
 function MovieDetail() {
   const { id } = useParams<{ id: string }>();
@@ -37,7 +38,6 @@ function MovieDetail() {
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen bg-primary-bg dark:bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           <button
@@ -137,9 +137,22 @@ function MovieDetail() {
                 </div>
               </div>
               <div>
-                <h3 className="font-semibold dark:text-white">
+                <h3 className="font-semibold dark:text-white mb-4">
                   {i18n.moviePage.cast}
                 </h3>
+                <div>
+                  {movie.cast && movie.cast.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                      {movie.cast.map((actor, index) => (
+                        <CastCard key={index} name={actor} />
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 dark:text-gray-400 italic">
+                      {i18n.moviePage.noCastAvailable}
+                    </p>
+                  )}
+                </div>
               </div>
               {user.isLoggedIn && (
                 <section className="pt-6 mt-6">

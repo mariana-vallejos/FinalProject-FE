@@ -10,7 +10,9 @@ function Home() {
   const { state } = useMovies();
   const [query, setQuery] = useState("");
   const [genre, setGenre] = useState("");
-  const [activeFilter, setActiveFilter] = useState<"none" | "query" | "genre">("none");
+  const [activeFilter, setActiveFilter] = useState<"none" | "query" | "genre">(
+    "none"
+  );
 
   function filterMoviesByQuery(movies: Movie[], query: string): Movie[] {
     const cleanedQuery = query.trim().toLowerCase();
@@ -24,26 +26,24 @@ function Home() {
     const cleanedGenre = genre.trim().toLowerCase();
     if (!cleanedGenre) return movies;
     return movies.filter((movie) =>
-      movie.genres.some((genre) => genre.toLowerCase().includes(cleanedGenre)) );
+      movie.genres.some((genre) => genre.toLowerCase().includes(cleanedGenre))
+    );
   }
 
   const filtered = useMemo(() => {
     const cleanedQuery = query.trim();
     const cleanedGenre = genre.trim();
-    if(activeFilter === "genre") {
+    if (activeFilter === "genre") {
       return filterMoviesByGenre(state.movies, cleanedGenre);
-    }
-    else if(activeFilter === "query") {
+    } else if (activeFilter === "query") {
       return filterMoviesByQuery(state.movies, cleanedQuery);
-    }
-    else {
+    } else {
       return state.movies;
     }
   }, [state.movies, query, genre, activeFilter]);
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen bg-primary-bg dark:bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
@@ -53,13 +53,19 @@ function Home() {
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:items-center">
             <SearchBar
               value={query}
-              onChange={(value) =>{ setQuery(value); setActiveFilter("query")} }
+              onChange={(value) => {
+                setQuery(value);
+                setActiveFilter("query");
+              }}
               placeHolder="Search by title, year, cast, genre…"
             />
             <Dropdown
               value={genre}
               options={state.genres}
-              onChange={(option) => {setGenre(option); setActiveFilter("genre")}}
+              onChange={(option) => {
+                setGenre(option);
+                setActiveFilter("genre");
+              }}
               className="sm:justify-self-end sm:w-64"
             />
           </div>
