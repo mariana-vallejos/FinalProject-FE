@@ -6,10 +6,14 @@ import MovieCard from "../../components/MovieCard";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import StatCard from "../../components/StatCard";
+import Toast from "../../components/Toast";
+
+type ToastState = { message: string; type: "success" | "error" } | null;
 
 function ProfilePage() {
   const navigate = useNavigate();
   const { user, deleteFromWatchlist } = useUser();
+  const [toast, setToast] = useState<ToastState>(null);
   const { state } = useMovies();
   const [activeTab, setActiveTab] = useState<
     "reviews" | "watchlist" | "watched"
@@ -35,6 +39,12 @@ function ProfilePage() {
           userReviews.reduce((acc, r) => acc + r.rating, 0) / userReviews.length
         ).toFixed(1)
       : "—";
+
+  async function handleDelete(movieId: number){
+    const res = await deleteFromWatchlist(movieId);
+    if(res) setToast({ message: "Removed from watchlist.", type: "success" });
+    else setToast({ message: "This movie was not in your watchlist", type: "error" });
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
@@ -118,12 +128,20 @@ function ProfilePage() {
                     optionLabels={["Delete"]}
                     optionHandlers={[
                       () => {
-                        deleteFromWatchlist(movie.id);
+                        handleDelete(movie.id);
                       },
                     ]}
                   />
                 ))}
               </div>
+            )}
+            {toast && (
+              <Toast
+                message={toast.message}
+                type={toast.type}
+                duration={3000}
+                onClose={() => setToast(null)}
+              />
             )}
           </>
         )}
