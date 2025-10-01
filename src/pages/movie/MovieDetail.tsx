@@ -11,7 +11,7 @@ function MovieDetail() {
   const navigate = useNavigate();
   const movieId = Number(id);
   const { state } = useMovies();
-  const { addToWatchlist, addToWatched } = useUser();
+  const { user, addToWatchlist, addToWatched } = useUser();
 
   const movie = state.movies.find((m) => m.id === movieId);
 
@@ -45,20 +45,22 @@ function MovieDetail() {
                 className="w-full rounded-lg shadow-md"
               />
 
-              <div className="flex gap-3 mt-6">
-                <button
-                  onClick={() => addToWatched(movieId)}
-                  className="flex-1 text-white bg-secundary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition"
-                >
-                  {i18n.moviePage.watched}
-                </button>
-                <button
-                  onClick={() => addToWatchlist(movieId)}
-                  className="flex-1 text-white bg-primary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition"
-                >
-                  {i18n.moviePage.watchlist}
-                </button>
-              </div>
+              {user.isLoggedIn && (
+                <div className="flex gap-3 mt-6">
+                  <button
+                    onClick={() => addToWatched(movieId)}
+                    className="flex-1 text-white bg-secundary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition"
+                  >
+                    {i18n.moviePage.watched}
+                  </button>
+                  <button
+                    onClick={() => addToWatchlist(movieId)}
+                    className="flex-1 text-white bg-primary dark:bg-gray-700 dark:text-gray-200 py-3 rounded-xl font-semibold hover:brightness-110 dark:hover:bg-gray-600 transition"
+                  >
+                    {i18n.moviePage.watchlist}
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="md:col-span-2 space-y-4">
