@@ -1,11 +1,12 @@
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Table } from "../../components/Table";
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense, useMemo } from "react";
 import Navbar from "../../components/Navbar";
 import type { Movie } from "../../domain/Movie";
 import { useMovies } from "../../context/MoviesContext";
 import LoadingModal from "../../components/LoadingModalFallback";
 import { makeEmptyMovieDraft } from "../../components/AddEditMovieModal/movieFormHelpers";
+import SearchBar from "../../components/SearchBar";
 
 const MovieFormWizard = lazy(
   () => import("../../components/MovieWizardModal/MovieFormWizard")
@@ -20,6 +21,7 @@ function Dashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [wizardMode, setWizardMode] = useState<WizardMode>("create");
+  const [query, setQuery] = useState("");
 
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const { state, addMovie, deleteMovie, editMovie } = useMovies();
@@ -46,29 +48,46 @@ function Dashboard() {
     setShowToast(true);
   };
 
+  function filterMoviesByName(movies: Movie[]) {
+    return movies.filter((movie) =>
+      movie.title.toLowerCase().includes(query.trim().toLowerCase())
+    );
+  }
+
+  const filteredMovies = useMemo(() => {
+    return filterMoviesByName(state.movies);
+  }, [query, state.movies]);
+
   return (
     <>
       <div>
         <div className="min-h-screen bg-primary-bg dark:bg-gray-700 px-6 py-10">
-          <div className="md:flex items-center justify-between mb-6">
-            <h2 className="font-title text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+          <h2 className="font-title text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">
               Movie Management
             </h2>
-            <button
-              onClick={() => {
-                setWizardMode("create");
-                setIsWizardOpen(true);
-              }}
-              className="btn-primary"
-              aria-label="Add new movie"
-            >
-              Add New Movie
-            </button>
+          <div className="md:flex items-center justify-between mb-6">
+            <div className="mt-4 md:mt-0 md:flex-1 flex items-center gap-3">
+              <SearchBar
+                value={query}
+                onChange={(value) => setQuery(value)}
+                placeHolder="Search by title..."
+              />
+              <button
+                onClick={() => {
+                  setWizardMode("create");
+                  setIsWizardOpen(true);
+                }}
+                className="btn-primary ml-auto"
+                aria-label="Add new movie"
+              >
+                Add New Movie
+              </button>
+            </div>
           </div>
 
           <div>
             <Table<Movie>
-              data={state.movies}
+              data={filteredMovies}
               columns={[
                 { key: "title", header: "Movie" },
                 { key: "year", header: "Year" },
