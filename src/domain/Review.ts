@@ -1,3 +1,4 @@
+import type { Movie } from "./Movie";
 import type { User } from "./User";
 
 export type Review = {
@@ -12,4 +13,8 @@ export type Review = {
 
 export interface ReviewWithUser extends Review {
   user: Pick<User, "name" | "avatar">;
+}
+
+export interface ReviewWithMovie extends Review {
+  movie: Pick<Movie, "id" | "title" | "posterUrl">;
 }

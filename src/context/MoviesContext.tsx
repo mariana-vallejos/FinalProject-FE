@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { dbPromise } from "../db/db";
 import type { Movie } from "../domain/Movie";
-import type { Review } from "../domain/Review";
+import type { Review, ReviewWithMovie } from "../domain/Review";
 import type { State } from "../domain/State";
 import { moviesMock } from "../Mocks/movies.mock";
 import { reviewsMock } from "../Mocks/reviews.mock";
@@ -25,6 +25,7 @@ const MoviesContext = createContext<{
   addReview: (r: Omit<Review, "id" | "createdAt">) => Promise<void>;
   editReview: (r: Review) => Promise<void>;
   deleteReview: (id: number) => Promise<void>;
+  getUserReviews: (userId: string) => ReviewWithMovie[];
 } | null>(null);
 
 function reducer(state: State, action: Action): State {
@@ -170,6 +171,22 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: "DELETE_MOVIE", id });
   };
 
+  const getUserReviews = (userId: string): ReviewWithMovie[] => {
+    return state.reviews
+      .filter((r) => r.userId === userId)
+      .map((r) => {
+        const movie = state.movies.find((m) => m.id === r.movieId);
+        return {
+          ...r,
+          movie: {
+            id: movie?.id ?? 0,
+            title: movie?.title ?? "Desconocido",
+            posterUrl: movie?.posterUrl ?? "/default-poster.png",
+          },
+        };
+      });
+  };
+
   const addReview = async (r: Omit<Review, "id" | "createdAt">) => {
     const db = await dbPromise;
     const rightNowDate = new Date().toISOString();
@@ -209,6 +226,7 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
         addReview,
         editReview,
         deleteReview,
+        getUserReviews,
       }}
     >
       {children}

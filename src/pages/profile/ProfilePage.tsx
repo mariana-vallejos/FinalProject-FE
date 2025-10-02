@@ -6,6 +6,7 @@ import MovieCard from "../../components/MovieCard";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import StatCard from "../../components/StatCard";
+import MyReviews from "../../components/review/MyReviews";
 
 function ProfilePage() {
   const navigate = useNavigate();
@@ -102,7 +103,7 @@ function ProfilePage() {
 
       <div className="mt-6">
         {activeTab === "reviews" && (
-          <p className="text-gray-600">{i18n.profile.noContent}</p>
+          <MyReviews/>
         )}
 
         {activeTab === "watchlist" && (
