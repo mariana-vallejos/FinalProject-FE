@@ -25,7 +25,11 @@ function MovieDetail() {
   const { myReview, otherReviews, addMyReview } = useMovieReviews(movieId);
 
   const movie = state.movies.find((m) => m.id === movieId);
-
+  const movieReviews = state.reviews.filter((r) => r.movieId === movieId);
+  const avgRating =
+    movieReviews.length > 0
+      ? movieReviews.reduce((sum, r) => sum + r.rating, 0) / movieReviews.length
+      : 0;
   const handleSubmitReview = async (
     reviewData: Omit<Review, "id" | "createdAt">
   ) => {
@@ -119,7 +123,7 @@ function MovieDetail() {
                   </p>
                 </div>
                 {/* Pasar dinamicamente el raiting */}
-                <RatingBadge rating={3} />
+                <RatingBadge rating={avgRating} />
               </div>
 
               <p className="font-semibold dark:text-white">
