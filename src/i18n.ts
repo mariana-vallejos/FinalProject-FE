@@ -36,6 +36,8 @@ export const i18n = {
     alredyInWatched: "Movie already in Watched",
     alredyInWatchlist: "Movie already in Watchlist",
     noCastAvailable: "No cast information available",
+    noReviews: "No reviews yet.",
+    postedReview: "Review posted and movie added to watched list",
   },
 
   notFoundPage: {
