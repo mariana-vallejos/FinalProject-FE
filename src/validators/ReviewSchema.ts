@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 export const ReviewSchema = Yup.object().shape({
-  text: Yup.string().min(20).when("rating", {
+  text: Yup.string().min(20).max(450).when("rating", {
     is: (rating: number) => rating < 3,
     then: (schema) =>
       schema.required("Please explain why you gave a low rating").min(3, "Too short"),

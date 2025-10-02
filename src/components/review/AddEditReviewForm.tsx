@@ -19,6 +19,7 @@ const AddEditReviewForm = ({
   onSubmit,
 }: AddEditReviewFormProps) => {
   const { user } = useUser();
+
   return (
     <article className="py-3 px-5 relative bg-[#e4f7ff] dark:bg-gray-500 rounded-xl">
       <div className="flex gap-3 pb-1 items-center">
@@ -90,14 +91,9 @@ const AddEditReviewForm = ({
               <button
                 type="button"
                 onClick={() => {
-                  if (
-                    values.newTag.trim() &&
-                    !values.tags.includes(values.newTag.trim())
-                  ) {
-                    setFieldValue("tags", [
-                      ...values.tags,
-                      values.newTag.trim(),
-                    ]);
+                  const newTag = values.newTag.trim();
+                  if (newTag && !values.tags.includes(newTag)) {
+                    setFieldValue("tags", [...values.tags, newTag]);
                     setFieldValue("newTag", "");
                   }
                 }}
@@ -107,7 +103,7 @@ const AddEditReviewForm = ({
               </button>
             </div>
 
-            <ReviewTags tags={values.tags} />
+            <ReviewTags tags={values.tags} setFieldValue={setFieldValue} />
 
             <div className="flex justify-end gap-2">
               {onCancel && (
