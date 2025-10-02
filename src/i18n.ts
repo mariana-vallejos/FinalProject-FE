@@ -17,6 +17,8 @@ export const i18n = {
     watchlist: "Watch List",
     watched: "Watched",
     noContent: "No content available.",
+    deleteReviewMsg: "Review deleted!",
+    editReviewMsg: "Review edited successfully"
   },
   moviePage: {
     movieNotFound: "Movie not found",

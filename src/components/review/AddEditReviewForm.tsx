@@ -10,7 +10,6 @@ type AddEditReviewFormProps = {
   initialReview?: Review;
   onSubmit: (review: Omit<Review, "id" | "createdAt">) => void;
   onCancel?: () => void;
-  isEditing?: boolean
 };
 
 const AddEditReviewForm = ({
@@ -18,7 +17,6 @@ const AddEditReviewForm = ({
   initialReview,
   onCancel,
   onSubmit,
-  isEditing = false
 }: AddEditReviewFormProps) => {
   const { user } = useUser();
   return (
@@ -122,7 +120,7 @@ const AddEditReviewForm = ({
                 </button>
               )}
               <button type="submit" className="btn-primary">
-                {isEditing ? "Save changes" : "Post review"}
+                {initialReview ? "Save changes" : "Post review"}
               </button>
             </div>
           </Form>

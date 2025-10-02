@@ -13,8 +13,8 @@ const MyReviews = () => {
       {reviews.length === 0 ? (
         <p className="text-gray-600">{i18n.profile.noContent}</p>
       ) : (
-        reviews.map((review) => (
-          <div className="md:flex justify-between gap-10 pb-8 items-center">
+        reviews.map((review, index) => (
+          <div key={index} className="md:flex justify-between gap-10 pb-8 items-center">
             <div className="w-full md:w-2/3">
               <h3 className="font-bold text-md pb-2">{review.movie.title}</h3>
               <div className="ml-3 pl-2 border-l-2 border-gray-300">
@@ -30,6 +30,7 @@ const MyReviews = () => {
                     createdAt: review.createdAt,
                     user: { name: user.name, avatar: user.avatar },
                   }}
+                  bgColor="#E4F7FF"
                 />
               </div>
             </div>
