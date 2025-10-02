@@ -6,6 +6,7 @@ import MovieCard from "../../components/MovieCard";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import StatCard from "../../components/StatCard";
+import MyReviews from "../../components/review/MyReviews";
 import Toast from "../../components/Toast";
 
 type ToastState = { message: string; type: "success" | "error" } | null;
@@ -64,7 +65,7 @@ function ProfilePage() {
           />
 
           <div>
-            <h2 className="text-xl font-bold">{user.name}</h2>
+            <h2 className="text-xl font-bold dark:text-blue-200">{user.name}</h2>
             <p className="text-gray-500">{user.email}</p>
 
             <button className="btn-primary">{i18n.profile.edit}</button>
@@ -112,7 +113,7 @@ function ProfilePage() {
 
       <div className="mt-6">
         {activeTab === "reviews" && (
-          <p className="text-gray-600">{i18n.profile.noContent}</p>
+          <MyReviews/>
         )}
 
         {activeTab === "watchlist" && (
