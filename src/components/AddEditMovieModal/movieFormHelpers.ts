@@ -29,9 +29,11 @@ export function toMovie(draft: MovieDraft): Movie{
         description: draft.description ?? "", 
         posterUrl: draft.posterUrl ?? "", 
         genres: draft.genres ?? [], 
-        cast: draft.cast ?? [], 
+        cast: draft.cast ?? [],
         tags: draft.tags ?? [], 
-        createdAt: draft.createdAt ?? now.toISOString() 
+        createdAt: draft.createdAt ?? now.toISOString(),
+        director: draft.director ?? "",
+        studio: draft.studio ?? ""
     };
     return movie;
 }

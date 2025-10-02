@@ -131,7 +131,7 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
     const db = await dbPromise;
     const rightNowDate = new Date().toISOString();
 
-    if (!movie.title || !movie.year || !movie.genres || !movie.description || !movie.posterUrl || !movie.cast || !movie.tags) {
+    if (!movie.title || !movie.year || !movie.genres || !movie.description || !movie.posterUrl || !movie.cast || !movie.tags || !movie.studio || !movie.director) {
       throw new Error("All required movie fields must be provided.");
     }
 
@@ -143,7 +143,9 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
       posterUrl: movie.posterUrl,
       cast: movie.cast,
       tags: movie.tags,
-      createdAt: rightNowDate
+      createdAt: rightNowDate,
+      studio: movie.studio,
+      director: movie.director
     });
     const newMovie: Movie = {
       id,
@@ -154,7 +156,9 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
       posterUrl: movie.posterUrl,
       cast: movie.cast,
       tags: movie.tags,
-      createdAt: rightNowDate
+      createdAt: rightNowDate,
+      studio: movie.studio,
+      director: movie.director
     };
     dispatch({ type: "ADD_MOVIE", movie: newMovie });
   };
