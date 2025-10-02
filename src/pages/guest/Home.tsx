@@ -57,7 +57,7 @@ function Home() {
                 setQuery(value);
                 setActiveFilter("query");
               }}
-              placeHolder="Search by title, year, cast, genre…"
+              placeHolder="Search by title..."
             />
             <Dropdown
               value={genre}

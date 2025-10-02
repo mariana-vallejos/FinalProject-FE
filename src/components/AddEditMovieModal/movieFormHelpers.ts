@@ -15,6 +15,8 @@ export function makeEmptyMovieDraft(): MovieDraft {
       genres: [],
       cast: [],
       tags: [],
+      director: "",
+      studio: "",
       createdAt: now.toISOString(),
     };
 }

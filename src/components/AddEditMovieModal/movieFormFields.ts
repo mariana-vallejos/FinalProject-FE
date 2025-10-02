@@ -17,7 +17,6 @@ export type Step2Fields = { field: Extract<FieldType, "genres" | "cast" | "tags"
 
 
 
-export type MovieDraft = Omit<Movie, "id" | "createdAt">;
 
 export type MovieErrorsType = Partial<Record<FieldType, string>>;
 export type MovieTouchedType = Partial<Record<FieldType, boolean>>;
