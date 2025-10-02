@@ -41,11 +41,15 @@ function ProfilePage() {
         ).toFixed(1)
       : "—";
 
-  async function handleDelete(movieId: number){
+  async function handleDelete(movieId: number) {
     const res = await deleteFromWatchlist(movieId);
-    if(res) setToast({ message: "Removed from watchlist.", type: "success" });
-    else setToast({ message: "This movie was not in your watchlist", type: "error" });
-  };
+    if (res) setToast({ message: "Removed from watchlist.", type: "success" });
+    else
+      setToast({
+        message: "This movie was not in your watchlist",
+        type: "error",
+      });
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
@@ -65,10 +69,10 @@ function ProfilePage() {
           />
 
           <div>
-            <h2 className="text-xl font-bold dark:text-blue-200">{user.name}</h2>
+            <h2 className="text-xl font-bold dark:text-blue-200">
+              {user.name}
+            </h2>
             <p className="text-gray-500">{user.email}</p>
-
-            <button className="btn-primary">{i18n.profile.edit}</button>
           </div>
         </div>
 
@@ -112,9 +116,7 @@ function ProfilePage() {
       </div>
 
       <div className="mt-6">
-        {activeTab === "reviews" && (
-          <MyReviews/>
-        )}
+        {activeTab === "reviews" && <MyReviews />}
 
         {activeTab === "watchlist" && (
           <>
