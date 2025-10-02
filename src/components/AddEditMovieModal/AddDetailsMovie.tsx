@@ -1,19 +1,35 @@
+import { useFormikContext } from "formik";
+import InputField from "../InputField";
 import ListInputField from "../ListInputField";
 import {
   secondStepFields,
+  type FieldType,
+  type MovieDraft,
   type Step2Fields,
 } from "./movieFormFields";
 
 export default function AddDetailsMovie() {
+  const { errors, touched } = useFormikContext<MovieDraft>();
 
   return (
     <>
       {secondStepFields.map((element: Step2Fields) =>
-        <ListInputField
+        element.type === "list" ? (
+          <ListInputField
             key={element.field}
             field={element.field}
             placeholder={element.placeholder}
-        />
+          />
+        ) : (
+          <InputField
+            key={element.field}
+            field={element.field}
+            type={element.type}
+            placeholder={element.placeholder}
+            error={errors[element.field as FieldType] ? true : false}
+            touched={touched[element.field] ? true : false}
+          />
+        )
       )}
     </>
   );
