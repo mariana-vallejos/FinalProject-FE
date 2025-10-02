@@ -46,12 +46,14 @@ function reducer(state: State, action: Action): State {
       const genres = computeGenres(movies);
       return { ...state, movies, genres };
     }
-    case "DELETE_MOVIE":
-      {
-        const movies = state.movies.filter((movie) => movie.id !== action.id);
-        const genres = computeGenres(movies);
-        return { ...state, movies, genres };
-      }
+    case "DELETE_MOVIE": {
+      const movies = state.movies.filter((movie) => movie.id !== action.id);
+      const filteredReviews = state.reviews.filter(
+        (review) => review.movieId !== action.id
+      );
+      const genres = computeGenres(movies);
+      return { ...state, movies, reviews: filteredReviews, genres };
+    }
     case "ADD_REVIEW":
       return { ...state, reviews: [...state.reviews, action.review] };
     case "EDIT_REVIEW":
@@ -72,8 +74,12 @@ function reducer(state: State, action: Action): State {
 }
 
 export function MoviesProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, { movies: [], reviews: [], genres: [] });
-  const { addToWatched } = useUser()
+  const [state, dispatch] = useReducer(reducer, {
+    movies: [],
+    reviews: [],
+    genres: [],
+  });
+  const { addToWatched } = useUser();
 
   // cargar desde indexedDB
   useEffect(() => {
@@ -119,8 +125,14 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
       const freshMovies = await db.getAll("movies");
       const freshReviews = await db.getAll("reviews");
 
-      const movies: Movie[] = freshMovies.map((movie) => ({ id: movie.id!, ...movie }));
-      const reviews: Review[] = freshReviews.map((review) => ({ id: review.id!, ...review }));
+      const movies: Movie[] = freshMovies.map((movie) => ({
+        id: movie.id!,
+        ...movie,
+      }));
+      const reviews: Review[] = freshReviews.map((review) => ({
+        id: review.id!,
+        ...review,
+      }));
       dispatch({ type: "SET_DATA", movies, reviews });
     })();
   }, []);
@@ -130,7 +142,17 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
     const db = await dbPromise;
     const rightNowDate = new Date().toISOString();
 
-    if (!movie.title || !movie.year || !movie.genres || !movie.description || !movie.posterUrl || !movie.cast || !movie.tags || !movie.studio || !movie.director) {
+    if (
+      !movie.title ||
+      !movie.year ||
+      !movie.genres ||
+      !movie.description ||
+      !movie.posterUrl ||
+      !movie.cast ||
+      !movie.tags ||
+      !movie.studio ||
+      !movie.director
+    ) {
       throw new Error("All required movie fields must be provided.");
     }
 
@@ -144,7 +166,7 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
       tags: movie.tags,
       createdAt: rightNowDate,
       studio: movie.studio,
-      director: movie.director
+      director: movie.director,
     });
     const newMovie: Movie = {
       id,
@@ -157,7 +179,7 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
       tags: movie.tags,
       createdAt: rightNowDate,
       studio: movie.studio,
-      director: movie.director
+      director: movie.director,
     };
     dispatch({ type: "ADD_MOVIE", movie: newMovie });
   };
@@ -171,6 +193,19 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
   const deleteMovie = async (id: number) => {
     const db = await dbPromise;
     await db.delete("movies", id);
+
+    const tx = db.transaction("reviews", "readwrite");
+    const store = tx.objectStore("reviews");
+    const reviews = (await store.getAll()) as Review[];
+    const relatedReviews = reviews.filter((r) => r.movieId === id);
+
+    await Promise.all(
+      relatedReviews
+        .filter((r) => typeof r.id === "number")
+        .map((r) => store.delete(r.id as number))
+    );
+
+    await tx.done;
     dispatch({ type: "DELETE_MOVIE", id });
   };
 
@@ -195,16 +230,16 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
     const rightNowDate = new Date().toISOString();
     const newReviewId = await db.put("reviews", {
       ...r,
-      createdAt: rightNowDate
+      createdAt: rightNowDate,
     });
 
     const newReview: Review = {
       id: newReviewId,
       ...r,
-      createdAt: rightNowDate
-    }
+      createdAt: rightNowDate,
+    };
     dispatch({ type: "ADD_REVIEW", review: newReview });
-    addToWatched(newReview.movieId)
+    addToWatched(newReview.movieId);
   };
 
   const editReview = async (review: Review) => {
