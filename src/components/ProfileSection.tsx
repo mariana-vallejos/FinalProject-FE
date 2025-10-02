@@ -1,9 +1,8 @@
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useUser } from "../context/UserContext";
 import { i18n } from "../i18n";
 
 function ProfileSection() {
-  const navigate = useNavigate();
   const { user, logout } = useUser();
 
   const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
