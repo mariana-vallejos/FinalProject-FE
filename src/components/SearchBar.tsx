@@ -43,7 +43,7 @@ export default function SearchBar({
         onChange={handleChange}
         placeholder={placeHolder}
         aria-label="Search"
-        className="w-full rounded-xl border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 pr-10 outline-none focus:ring-2 focus:ring-sky-500"
+        className="w-full rounded-xl px-4 py-2 pr-10 outline-none border border-neutral-300 dark:border-neutral-500 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-500 dark:placeholder:text-neutral-400 caret-neutral-800 dark:caret-neutral-100 focus:ring-2 focus:ring-sky-500"
       />
       {query && (
         <button
