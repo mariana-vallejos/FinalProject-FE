@@ -7,12 +7,14 @@ import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import ReviewsPage from "../pages/admin/ReviewsPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 import MainLayout from "../components/layout";
+import NotFoundPage from "../pages/NotFound/NotFoundPage";
 
 function AppRoutes() {
   return (
     <>
       <Routes>
         <Route path={"/login"} element={<LoginPage />} />
+        <Route path={"/not-found"} element={<NotFoundPage />} />
         <Route element={<MainLayout />}>
           <Route path={"/"} element={<Home />} />
 
@@ -45,6 +47,7 @@ function AppRoutes() {
             }
           />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

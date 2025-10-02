@@ -34,4 +34,10 @@ export const i18n = {
     alredyInWatchlist: "Movie already in Watchlist",
     noCastAvailable: "No cast information available",
   },
+
+  notFoundPage: {
+    error: "404",
+    notFound: "Page not found",
+    notFoundMessage: "Sorry, The page you're looking for doesn't exist.",
+  }
 };
