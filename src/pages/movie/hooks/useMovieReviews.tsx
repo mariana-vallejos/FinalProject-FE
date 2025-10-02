@@ -19,7 +19,7 @@ export function useMovieReviews(movieId: number) {
       const enriched = state.reviews
         .filter((r) => r.movieId === movieId)
         .map((r) => {
-          const reviewUser = users.find((u) => u.email === r.userId);
+          const reviewUser = users?.find((u) => u.email === r.userId);
           return {
             ...r,
             user: {
