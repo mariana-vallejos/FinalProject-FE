@@ -4,9 +4,9 @@ import ListInputField from "../ListInputField";
 import {
   secondStepFields,
   type FieldType,
-  type MovieDraft,
   type Step2Fields,
 } from "./movieFormFields";
+import type { MovieDraft } from "./movieFormHelpers";
 
 export default function AddDetailsMovie() {
   const { errors, touched } = useFormikContext<MovieDraft>();

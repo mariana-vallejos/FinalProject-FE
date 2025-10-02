@@ -46,11 +46,11 @@ function stringList({
 
 function stringField(label: string, minLen: number, maxLen: number) {
   return Yup.string()
+    .required(`${label} is required`)
     .transform((value) => (typeof value === "string" ? value.trim() : value))
     .trim()
     .min(minLen, `${label} must be at least ${minLen} characters`)
-    .max(maxLen, `${label} must be at least ${maxLen} characters`)
-    .required(`${label} is required`);
+    .max(maxLen, `${label} must be at most ${maxLen} characters`);
 }
 
 export const MovieDetailsSchema = Yup.object({
