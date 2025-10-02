@@ -65,7 +65,7 @@ function ProfilePage() {
           />
 
           <div>
-            <h2 className="text-xl font-bold">{user.name}</h2>
+            <h2 className="text-xl font-bold dark:text-blue-200">{user.name}</h2>
             <p className="text-gray-500">{user.email}</p>
 
             <button className="btn-primary">{i18n.profile.edit}</button>

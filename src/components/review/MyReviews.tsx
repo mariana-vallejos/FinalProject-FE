@@ -16,7 +16,7 @@ const MyReviews = () => {
         reviews.map((review, index) => (
           <div key={index} className="md:flex justify-between gap-10 pb-8 items-center">
             <div className="w-full md:w-2/3">
-              <h3 className="font-bold text-md pb-2">{review.movie.title}</h3>
+              <h3 className="font-bold text-md pb-2 dark:text-blue-200">{review.movie.title}</h3>
               <div className="ml-3 pl-2 border-l-2 border-gray-300">
                 <ReviewComponent
                   readonly={false}

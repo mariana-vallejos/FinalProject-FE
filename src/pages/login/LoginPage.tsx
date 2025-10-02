@@ -1,6 +1,6 @@
 import PopcornImg from "../../assets/img/Popcorn.svg";
 import CinemaImg from "../../assets/img/Cinema.svg";
-import { Form, Formik } from "formik";
+import { Form, Formik, type FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router";
 import { useUser } from "../../context/UserContext";
@@ -31,7 +31,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (
     values: LoginForm,
-    { setSubmitting, setErrors }: any
+    { setSubmitting, setErrors }: FormikHelpers<LoginForm>
   ) => {
     try {
       await login(values.email, values.password);
@@ -41,7 +41,7 @@ const LoginPage = () => {
       } else {
         navigate("/");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Login failed", error);
       setErrors({ email: "Invalid credentials" });
     } finally {
@@ -88,7 +88,7 @@ const LoginPage = () => {
                 className="btn-primary w-full"
                 aria-label="submit button"
               >
-                {isSubmitting ? "Loading..." : "Login"}
+                {isSubmitting ? "Loading..." : "Sign In"}
               </button>
             </div>
             <img

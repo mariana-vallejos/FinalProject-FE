@@ -29,7 +29,8 @@ const ReviewComponent = ({
     message: string;
     type: "success" | "error";
   } | null>(null);
-
+  const isDark= window.matchMedia("(prefers-color-scheme: dark)").matches;
+  
   const handleDelete = () => {
     deleteReview(review.id);
     setToast({ message: i18n.profile.deleteReviewMsg, type: "success" });
@@ -69,8 +70,8 @@ const ReviewComponent = ({
   return (
     <article
       key={review.id}
-      className="py-3 px-5 relative dark:bg-gray-600 rounded-md"
-      style={{ backgroundColor: bgColor }}
+      className="py-3 px-5 relative rounded-md"
+      style={{ backgroundColor: isDark ? "#374151" : bgColor }}
     >
       {!readonly && (
         <div className="absolute top-0 right-0 flex md:gap-2 p-2 xl:opacity-0 xl:hover:opacity-100 transition-opacity ">
