@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
-import { MemoryRouter } from "react-router";
+import { MemoryRouter, Route, Routes } from "react-router";
 import ProtectedRoute from "./ProtectedRoute";
 
 vi.mock("../../context/UserContext", () => ({
@@ -30,18 +30,26 @@ describe("ProtectedRoute", () => {
   it("should redirect to /login if user is not logged in", () => {
     (useUser as ReturnType<typeof vi.fn>).mockReturnValue({
       user: { isLoggedIn: false, role: "guest" },
-      loading: true,
+      loading: false,
     });
 
     render(
       <MemoryRouter initialEntries={["/protected"]}>
-        <ProtectedRoute>
-          <div>Child</div>
-        </ProtectedRoute>
+        <Routes>
+          <Route
+            path="/protected"
+            element={
+              <ProtectedRoute>
+                <div>Secret</div>
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/login" element={<div>Login Page</div>} />
+        </Routes>
       </MemoryRouter>
     );
 
-    expect(window.location.pathname).toBe("/login");
+    expect(screen.getByText("Login Page")).toBeInTheDocument();
   });
 
   it("should redirect to / if user role is not allowed", () => {
