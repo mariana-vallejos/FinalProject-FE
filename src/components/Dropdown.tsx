@@ -17,7 +17,7 @@ export default function Dropdown({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-3 py-2 pr-9 outline-none focus:ring-2 focus:ring-sky-500 appearance-none [background-image:none]"
+        className="w-full rounded-xl px-3 py-2 pr-9 outline-none appearance-none [background-image:none] border border-neutral-300 dark:border-neutral-500 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:ring-2 focus:ring-sky-500"
       >
         <option value="">All</option>
         {options.map((option) => (
