@@ -100,21 +100,24 @@ function Dashboard() {
                 },
               ]}
             />
-            <Suspense
-              fallback={
-                <LoadingModal label="Opening Confirm Delete Modal..." />
-              }
-            >
-              <ConfirmModal
-                isOpen={isDeleteModalOpen}
-                title="Delete movie"
-                message="Are you sure to delete this movie? This action can't be undone."
-                confirmText="Delete"
-                cancelText="Cancel"
-                onConfirm={handleDelete}
-                onCancel={() => setIsDeleteModalOpen(false)}
-              />
-            </Suspense>
+
+            {isDeleteModalOpen && (
+              <Suspense
+                fallback={
+                  <LoadingModal label="Opening Confirm Delete Modal..." />
+                }
+              >
+                <ConfirmModal
+                  isOpen={isDeleteModalOpen}
+                  title="Delete movie"
+                  message="Are you sure to delete this movie? This action can't be undone."
+                  confirmText="Delete"
+                  cancelText="Cancel"
+                  onConfirm={handleDelete}
+                  onCancel={() => setIsDeleteModalOpen(false)}
+                />
+              </Suspense>
+            )}
           </div>
         </div>
       </div>
