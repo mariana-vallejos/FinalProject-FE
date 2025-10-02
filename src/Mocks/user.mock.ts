@@ -1,33 +1,104 @@
-export type Role = "guest" | "admin" | "user";
-
-export type User = {
-    name: string;
-    email: string;
-    role: Role;
-    avatar: string;
-    isLoggedIn: boolean;
-};
+import type { User } from "../domain/User";
 
 export const mockGuest: User = {
-    name: "",
-    email: "",
-    role: "guest",
-    avatar: "",
-    isLoggedIn: false,
+  name: "",
+  email: "",
+  password: "",
+  role: "guest",
+  avatar: "",
+  isLoggedIn: false,
 };
 
 export const mockAdmin: User = {
-    name: "Admin",
-    email: "admin@gmail.com",
-    role: "admin",
-    avatar: "https://i.pravatar.cc/40?img=12",
-    isLoggedIn: true,
+  name: "Admin",
+  email: "admin@gmail.com",
+  password: "admin",
+  role: "admin",
+  avatar: "https://i.pravatar.cc/40?img=12",
+  isLoggedIn: true,
+  watchlist: [],
+  watched: [],
 };
 
-export const mockUser: User = {
-    name: "John Perez",
+export const mockUsers: User[] = [
+  {
+    name: "John Doe",
     email: "john@gmail.com",
+    password: "user123",
+    role: "user",
+    avatar: "https://i.pravatar.cc/40?img=1",
+    isLoggedIn: true,
+    watchlist: [],
+    watched: [],
+  },
+  {
+    name: "Anna Smith",
+    email: "anna.smith@gmail.com",
+    password: "user123",
+    role: "user",
+    avatar: "https://i.pravatar.cc/40?img=2",
+    isLoggedIn: false,
+    watchlist: [],
+    watched: [],
+  },
+  {
+    name: "Michael Brown",
+    email: "michael.brown@gmail.com",
+    password: "user123",
+    role: "user",
+    avatar: "https://i.pravatar.cc/40?img=3",
+    isLoggedIn: false,
+    watchlist: [],
+    watched: [],
+  },
+  {
+    name: "Lucy Wilson",
+    email: "lucy.wilson@gmail.com",
+    password: "user123",
+    role: "user",
+    avatar: "https://i.pravatar.cc/40?img=4",
+    isLoggedIn: false,
+    watchlist: [],
+    watched: [],
+  },
+  {
+    name: "David Jones",
+    email: "david.jones@gmail.com",
+    password: "user123",
     role: "user",
     avatar: "https://i.pravatar.cc/40?img=5",
-    isLoggedIn: true,
-};
+    isLoggedIn: false,
+    watchlist: [],
+    watched: [],
+  },
+  {
+    name: "Sofía Martínez",
+    email: "sofia.martinez@gmail.com",
+    password: "user123",
+    role: "user",
+    avatar: "https://i.pravatar.cc/40?img=6",
+    isLoggedIn: false,
+    watchlist: [],
+    watched: [],
+  },
+  {
+    name: "Carlos Martínez",
+    email: "carlos@gmail.com",
+    password: "user123",
+    role: "user",
+    avatar: "https://i.pravatar.cc/40?img=7",
+    isLoggedIn: false,
+    watchlist: [],
+    watched: [],
+  },
+  {
+    name: "Jane Perez",
+    email: "jane@gmail.com",
+    password: "user123",
+    role: "user",
+    avatar: "https://i.pravatar.cc/40?img=8",
+    isLoggedIn: false,
+    watchlist: [],
+    watched: [],
+  },
+];
