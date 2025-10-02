@@ -1,13 +1,10 @@
 import Navbar from "../../components/Navbar";
 import MovieCard from "../../components/MovieCard";
-import Toast from "../../components/Toast";
-import { i18n } from "../../i18n";
-import type { Movie } from "../../domain/Movie";
-import { useUser } from "../../context/UserContext";
 import { useMovies } from "../../context/MoviesContext";
 import { useMemo, useState } from "react";
 import SearchBar from "../../components/SearchBar";
 import Dropdown from "../../components/Dropdown";
+import type { Movie } from "../../domain/Movie";
 
 function Home() {
   const { state } = useMovies();

@@ -26,7 +26,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       <div className="bg-white mx-4 dark:bg-gray-800 rounded-2xl shadow-lg w-full max-w-md p-6 animate-fadeIn">
         <h2 className="text-lg dark:text-gray-100 font-bold text-gray-800 mb-3 text-center">{title}</h2>
 
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">{message}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-300 mb-6 font-light">{message}</p>
 
         <div className="flex justify-end gap-3">
           <button

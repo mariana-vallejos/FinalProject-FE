@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router";
-import Navbar from "../../components/Navbar";
 import { useMovies } from "../../context/MoviesContext";
 import { FaArrowLeft } from "react-icons/fa";
 import RatingBadge from "../../components/RatingBadge";
@@ -7,7 +6,11 @@ import { i18n } from "../../i18n";
 import { useUser } from "../../context/UserContext";
 import Toast from "../../components/Toast";
 import { useState } from "react";
+import ReviewComponent from "../../components/review/ReviewComponent";
+import AddEditReviewForm from "../../components/review/AddEditReviewForm";
+import { useMovieReviews } from "./hooks/useMovieReviews";
 import CastCard from "../../components/CastCard";
+import type { Review } from "../../domain/Review";
 
 function MovieDetail() {
   const { id } = useParams<{ id: string }>();
@@ -19,7 +22,18 @@ function MovieDetail() {
     message: string;
     type: "success" | "error";
   } | null>(null);
+  const { myReview, otherReviews, addMyReview } = useMovieReviews(movieId);
+
   const movie = state.movies.find((m) => m.id === movieId);
+
+  const handleSubmitReview = async (reviewData: Omit<Review, "id" | "createdAt">) => {
+  await addMyReview(reviewData);
+
+  setToast({
+    message: "Review posted and movie added to watched list",
+    type: "success",
+  });
+};
 
   if (!movie) {
     return (
@@ -149,6 +163,38 @@ function MovieDetail() {
                   )}
                 </div>
               </div>
+              {user.isLoggedIn && (
+                <section className="pt-6 mt-6">
+                  <h4 className="text-gray-500 dark:text-gray-300 text-sm font-semibold">
+                    Your review
+                  </h4>
+                  {myReview && user.isLoggedIn ? (
+                    <ReviewComponent
+                      review={myReview}
+                      readonly={true}
+                      bgColor="#e4f7ff"
+                      
+                    />
+                  ) : (
+                    <AddEditReviewForm
+                      movieId={movieId}
+                      onSubmit={handleSubmitReview}
+                    />
+                  )}
+                </section>
+              )}
+              <section className="py-4">
+                <h2 className="dark:text-gray-300 font-semibold text-lg pb-2">
+                  {i18n.moviePage.reviews}
+                </h2>
+                {otherReviews.map((review) => (
+                  <ReviewComponent
+                    readonly={true}
+                    key={review.id}
+                    review={review}
+                  />
+                ))}
+              </section>
             </div>
           </div>
         </div>
