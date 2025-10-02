@@ -102,7 +102,7 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
         if (!alreadySeeded) {
           const tx = db.transaction("reviews", "readwrite");
           const store = tx.objectStore("reviews");
-
+          localStorage.setItem("reviews.seeded", "1");
           await Promise.all(
             reviewsMock.map(async (review) => {
               const { id: _ignore, ...insertable } = review;
@@ -113,7 +113,6 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
             })
           );
           await tx.done;
-          localStorage.setItem("reviews.seeded", "1");
         }
       }
 
