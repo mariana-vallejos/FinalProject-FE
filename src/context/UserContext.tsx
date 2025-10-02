@@ -9,6 +9,7 @@ interface UserContextType {
   logout: () => Promise<void>;
   addToWatchlist: (movieId: number) => Promise<"added" | "exists">;
   addToWatched: (movieId: number) => Promise<"added" | "exists">;
+  deleteFromWatchlist: (movieId: number) => Promise<boolean>;
   loading: boolean;
 }
 
@@ -80,6 +81,23 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     return "added";
   };
 
+  const deleteFromWatchlist = async (
+    movieId: number
+  ): Promise<boolean> => {
+    if (!user || !user.email) return false;
+    const db = await dbPromise;
+    const targetUser = await db.get("users", user.email);
+    if (!targetUser) return false;
+    const updatedUser = {
+      ...targetUser,
+      watchlist:
+        targetUser.watchlist?.filter((movie) => movie != movieId) ?? [],
+    };
+    await db.put("users", updatedUser);
+    setUser(updatedUser);
+    return true;
+  };
+
   const addToWatched = async (movieId: number): Promise<"added" | "exists"> => {
     if (!user || !user.email) return "exists";
 
@@ -104,7 +122,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <UserContext.Provider
-      value={{ user, login, logout, addToWatchlist, addToWatched, loading }}
+      value={{ user, login, logout, addToWatchlist, addToWatched, deleteFromWatchlist, loading }}
     >
       {children}
     </UserContext.Provider>

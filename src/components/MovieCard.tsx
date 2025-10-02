@@ -1,15 +1,30 @@
 import { Link } from "react-router";
 import type { Movie } from "../domain/Movie";
+import KebabMenu from "./KebabMenu";
 
 type MovieCardProps = {
   movie: Movie;
   className?: string;
+  type?: string;
+  optionLabels?: string[];
+  optionHandlers?: Array<() => void>;
 };
 
-export default function MovieCard({ movie, className = "" }: MovieCardProps) {
+export default function MovieCard({
+  movie,
+  className = "",
+  optionLabels,
+  optionHandlers,
+}: MovieCardProps) {
   const { id, title, year, posterUrl } = movie;
   const safeTitle = title || "Untitled";
   const safeYear = Number.isFinite(year) ? String(year) : "—";
+  const hasOptions =
+  Array.isArray(optionLabels) &&
+  Array.isArray(optionHandlers) &&
+  optionLabels.length > 0 &&
+  optionLabels.length === optionHandlers.length;
+
 
   return (
     <Link to={`/movies/${id}`} className="block">
@@ -32,6 +47,15 @@ export default function MovieCard({ movie, className = "" }: MovieCardProps) {
           ) : (
             <div className="grid h-full w-full place-items-center text-neutral-400">
               No image
+            </div>
+          )}
+          {hasOptions && (
+            <div className="absolute right-2 top-2 z-10">
+              <KebabMenu
+                optionLabels={optionLabels}
+                optionHandlers={optionHandlers}
+                insideLink
+              />
             </div>
           )}
         </div>
