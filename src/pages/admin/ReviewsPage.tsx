@@ -74,8 +74,8 @@ function ReviewsPage() {
           </div>
 
           <div className="min-h-screen bg-primary-bg py-10">
-            {users.length === 0 ? (
-              <p className="text-gray-500">Loading users...</p>
+            {filteredReviews.length === 0 ? (
+              <p className="text-gray-500 text-center">No results</p>
             ) : (
               <Table
                 data={filteredReviews}
