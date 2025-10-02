@@ -109,12 +109,12 @@ body {
         mt-[clamp(1rem,2vw,1rem)] pb-4;
   }
 
-  .kebab-button{
-    @apply grid place-items-center w-10 h-10 rounded-full bg-black/60 text-white backdrop-blur-md shadow-sm hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/60
+  .kebab-button {
+    @apply grid place-items-center w-10 h-10 rounded-full bg-black/60 text-white backdrop-blur-md shadow-sm hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/60;
   }
 
-  .kebab-button-options-container{
-    @apply absolute right-0 mt-2 min-w-36 z-50 rounded-lg border border-neutral-200/60 dark:border-neutral-700/60 bg-white dark:bg-neutral-800 shadow-lg overflow-hidden
+  .kebab-button-options-container {
+    @apply absolute right-0 mt-2 min-w-36 z-50 rounded-lg border border-neutral-200/60 dark:border-neutral-700/60 bg-white dark:bg-neutral-800 shadow-lg overflow-hidden;
   }
 
   .kebab-menu-item {
@@ -123,8 +123,7 @@ body {
     @apply text-neutral-800 dark:text-neutral-100;
   }
 
-  .kebab-options-delimiter{
-    @apply border-b border-neutral-200/60 dark:border-neutral-700/60
+  .kebab-options-delimiter {
+    @apply border-b border-neutral-200/60 dark:border-neutral-700/60;
   }
-
 }
