@@ -26,14 +26,16 @@ function MovieDetail() {
 
   const movie = state.movies.find((m) => m.id === movieId);
 
-  const handleSubmitReview = async (reviewData: Omit<Review, "id" | "createdAt">) => {
-  await addMyReview(reviewData);
+  const handleSubmitReview = async (
+    reviewData: Omit<Review, "id" | "createdAt">
+  ) => {
+    await addMyReview(reviewData);
 
-  setToast({
-    message: "Review posted and movie added to watched list",
-    type: "success",
-  });
-};
+    setToast({
+      message: i18n.moviePage.postedReview,
+      type: "success",
+    });
+  };
 
   if (!movie) {
     return (
@@ -173,7 +175,6 @@ function MovieDetail() {
                       review={myReview}
                       readonly={true}
                       bgColor="#e4f7ff"
-                      
                     />
                   ) : (
                     <AddEditReviewForm
@@ -187,13 +188,19 @@ function MovieDetail() {
                 <h2 className="dark:text-gray-300 font-semibold text-lg pb-2">
                   {i18n.moviePage.reviews}
                 </h2>
-                {otherReviews.map((review) => (
-                  <ReviewComponent
-                    readonly={true}
-                    key={review.id}
-                    review={review}
-                  />
-                ))}
+                {otherReviews.length === 0 ? (
+                  <p className="text-gray-400 text-center">
+                    {i18n.moviePage.noReviews}
+                  </p>
+                ) : (
+                  otherReviews.map((review) => (
+                    <ReviewComponent
+                      readonly={true}
+                      key={review.id}
+                      review={review}
+                    />
+                  ))
+                )}
               </section>
             </div>
           </div>

@@ -23,7 +23,7 @@ export function useMovieReviews(movieId: number) {
           return {
             ...r,
             user: {
-              name: reviewUser?.name ?? "Desconocido",
+              name: reviewUser?.name ?? "Unknown",
               avatar: reviewUser?.avatar ?? "/default-avatar.png",
             },
           };

@@ -184,7 +184,7 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
           ...r,
           movie: {
             id: movie?.id ?? 0,
-            title: movie?.title ?? "Desconocido",
+            title: movie?.title ?? "Unknown",
             posterUrl: movie?.posterUrl ?? "/default-poster.png",
           },
         };

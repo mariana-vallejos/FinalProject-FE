@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import Navbar from "../../components/Navbar";
 import Stars from "../../components/Stars";
 import { Table } from "../../components/Table";
 import { dbPromise } from "../../db/db";
@@ -54,7 +53,7 @@ function ReviewsPage() {
   const filteredReviews = useMemo(() => {
     const cleanedQuery = query.trim().toLowerCase();
     return filterReviewsByQuery(state.reviews, cleanedQuery);
-  }, [state.reviews, query]);
+  }, [state.reviews, query, users]);
 
   return (
     <div>
@@ -75,23 +74,27 @@ function ReviewsPage() {
           </div>
 
           <div className="min-h-screen bg-primary-bg py-10">
-            <Table
-              data={filteredReviews}
-              columns={[
-                { key: "user", header: "User" },
-                { key: "movie", header: "Movie" },
-                {
-                  key: "rating",
-                  header: "Rating",
-                  render: (row) => (
-                    <div className="flex justify-center">
-                      <Stars rating={row.rating} />
-                    </div>
-                  ),
-                },
-                { key: "text", header: "Message" },
-              ]}
-            />
+            {filteredReviews.length === 0 ? (
+              <p className="text-gray-500 text-center">No results</p>
+            ) : (
+              <Table
+                data={filteredReviews}
+                columns={[
+                  { key: "user", header: "User" },
+                  { key: "movie", header: "Movie" },
+                  {
+                    key: "rating",
+                    header: "Rating",
+                    render: (row) => (
+                      <div className="flex justify-center">
+                        <Stars rating={row.rating} />
+                      </div>
+                    ),
+                  },
+                  { key: "text", header: "Message" },
+                ]}
+              />
+            )}
           </div>
         </div>
       </main>
