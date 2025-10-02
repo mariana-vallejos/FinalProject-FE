@@ -12,12 +12,12 @@ export default function Dropdown({
   className = "",
 }: DropdownProps) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative min-w-0 ${className}`}>
       <label className="sr-only">Filter</label>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl px-3 py-2 pr-9 outline-none appearance-none [background-image:none] border border-neutral-300 dark:border-neutral-500 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:ring-2 focus:ring-sky-500"
+        className="block w-full max-w-full min-w-0 rounded-xl px-3 pr-9 py-3 sm:py-2.5 text-[16px] sm:text-sm md:text-base border border-neutral-300 dark:border-neutral-500 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 appearance-none [background-image:none] outline-none focus:ring-2 focus:ring-sky-500 overflow-hidden text-ellipsis whitespace-nowrap"
       >
         <option value="">All</option>
         {options.map((option) => (
