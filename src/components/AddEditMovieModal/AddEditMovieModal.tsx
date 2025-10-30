@@ -3,7 +3,7 @@ import InputField from "../InputField";
 import { fields, type FieldType, type Step1Fields } from "./movieFormFields";
 import type { MovieDraft } from "./movieFormHelpers";
 
-export default function AddEditMovieModal({}) {
+export default function AddEditMovieModal() {
 const { errors, touched } = useFormikContext<MovieDraft>();
 
   return (

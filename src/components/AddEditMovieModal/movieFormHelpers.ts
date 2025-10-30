@@ -1,6 +1,6 @@
 import type { ValidationError } from "yup";
 import type { Movie } from "../../domain/Movie";
-import type { FieldType, MovieErrorsType, MovieTouchedType } from "./movieFormFields";
+import type { FieldType, MovieErrorsType } from "./movieFormFields";
 
 export type MovieDraft = Partial<Movie>;
 

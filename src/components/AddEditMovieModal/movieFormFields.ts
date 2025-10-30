@@ -1,4 +1,3 @@
-import type { Movie } from "../../domain/Movie";
 
 export type FieldType = 
   | "title"
