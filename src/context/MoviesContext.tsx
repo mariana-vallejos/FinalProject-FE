@@ -94,7 +94,7 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem("movies.seeded", "1");
         await Promise.all(
           moviesMock.map(async (movie) => {
-            const { id: _ignore, ...insertable } = movie;
+            const { ...insertable } = movie;
             await store.add({
               ...insertable,
               createdAt: insertable.createdAt ?? new Date().toISOString(),
@@ -112,7 +112,7 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
           localStorage.setItem("reviews.seeded", "1");
           await Promise.all(
             reviewsMock.map(async (review) => {
-              const { id: _ignore, ...insertable } = review;
+              const { ...insertable } = review;
               await store.add({
                 ...insertable,
                 createdAt: insertable.createdAt ?? new Date().toISOString(),
