@@ -23,8 +23,8 @@ function Dashboard() {
 
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const { state, addMovie, deleteMovie, editMovie } = useMovies();
-  const [showToast, setShowToast] = useState(false);
-  const [messageToast, setMessageToast] = useState("");
+  const [, setShowToast] = useState(false);
+  const [, setMessageToast] = useState("");
 
   const handleOpenConfirm = (id: number) => {
     setSelectedId(id);
