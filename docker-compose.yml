@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  nginx-proxy:
+    image: nginx:1.25-alpine
+    container_name: nginx-proxy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/proxy.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend-blue
+      - frontend-green
+
+  frontend-blue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: frontend-blue
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./nginx/default.conf.blue:/etc/nginx/conf.d/default.conf
+
+  frontend-green:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: frontend-green
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./nginx/default.conf.green:/etc/nginx/conf.d/default.conf
